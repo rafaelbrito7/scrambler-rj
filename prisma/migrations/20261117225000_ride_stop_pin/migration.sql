@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "RideStop" ADD COLUMN     "lat" DOUBLE PRECISION,
+ADD COLUMN     "lon" DOUBLE PRECISION;
+
