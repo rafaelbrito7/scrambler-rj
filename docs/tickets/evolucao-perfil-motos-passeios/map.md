@@ -44,4 +44,5 @@ Duas specs prontas para virar tickets: `docs/specs/perfis-dos-participantes.md` 
 - Chat, comentários e automação de WhatsApp.
 - Limite de vagas e cobrança por passeio.
 - Líder e ferrolho do passeio: decidido em "Roteiro e ficha do passeio" e retirado pelo usuário em 2026-11-17; o grupo anda junto, sem esses papéis.
+- Rota como template: decidido em "Depois do passeio" e retirado pelo usuário em 2026-11-23; o grupo não vai salvar a rota de um passeio para reutilizar.
 - Destaque no traçado por tipo de via e piso (estrada, off-road): descartado pelo usuário em 2026-11-17. O piso do passeio aparece só na ficha (asfalto, terra, misto).
