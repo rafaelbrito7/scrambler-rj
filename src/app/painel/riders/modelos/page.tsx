@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { BIKE_MODEL_NAME_MAX_LENGTH } from "@/server/bike-model-list";
+import { BIKE_MODEL_NAME_MAX_LENGTH } from "@/server/bike-models";
 import { access, bikeModels } from "@/server/services";
 import { requireAdmin } from "@/server/session";
 

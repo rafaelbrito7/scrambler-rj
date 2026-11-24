@@ -8,7 +8,7 @@ import {
   type ModItem,
   resolveBike,
 } from "@/server/bike-models";
-import { loadOfferedBikeModels } from "@/server/bike-model-list";
+import { loadOfferedBikeModels, readListedModelForWrite } from "@/server/bike-model-list";
 import type { Database } from "@/server/db";
 import { groupName } from "@/server/display-name";
 import {
@@ -877,7 +877,9 @@ export function createProfileService(
 
         if (owned >= MAX_BIKES) throw new ProfileError("BIKE_LIMIT");
 
-        return tx.bike.create({ data: { ...data, photoKey, userId }, select: { id: true } });
+        const listedNow = await readListedModelForWrite(tx, data.listedModelId);
+
+        return tx.bike.create({ data: { ...data, ...listedNow, photoKey, userId }, select: { id: true } });
       });
     } catch (error) {
       if (photoKey) await photos.remove(photoKey);
@@ -892,7 +894,6 @@ export function createProfileService(
     input: BikeInput,
     photoChange: PhotoChange = { kind: "keep" },
   ) {
-    // A bike keeps the model it already has on offer, even one taken off the list since.
     const data = validateBike(input, photoChange, await loadOfferedBikeModels(db, bikeId));
     const isChangingPhoto = photoChange.kind !== "keep";
     const newPhotoKey = photoChange.kind === "replace" ? await photos.save(photoChange.photo) : null;
@@ -911,7 +912,9 @@ export function createProfileService(
 
         const photoKey = isChangingPhoto ? newPhotoKey : current.photoKey;
 
-        await tx.bike.update({ where: { id: bikeId }, data: { ...data, photoKey } });
+        const listedNow = await readListedModelForWrite(tx, data.listedModelId);
+
+        await tx.bike.update({ where: { id: bikeId }, data: { ...data, ...listedNow, photoKey } });
       });
     } catch (error) {
       if (newPhotoKey) await photos.remove(newPhotoKey);
