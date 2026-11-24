@@ -1,18 +1,6 @@
 // Pure pieces about bikes, shared by the server and the browser forms. Keep this file free of
 // server-only imports. The list of models itself lives in the database, kept by administrators.
 
-// The list the platform started with: what the first migration wrote and what tests reset to.
-export const INITIAL_BIKE_MODELS = [
-  { name: "Scrambler 400 X", engineSize: 400 },
-  { name: "Scrambler 400 XC", engineSize: 400 },
-  { name: "Scrambler 900", engineSize: 900 },
-  { name: "Street Scrambler", engineSize: 900 },
-  { name: "Scrambler 1200 X", engineSize: 1200 },
-  { name: "Scrambler 1200 XC", engineSize: 1200 },
-  { name: "Scrambler 1200 XE", engineSize: 1200 },
-  { name: "Scrambler 865", engineSize: 865 },
-];
-
 export type ListedBikeModel = { id: string; name: string; engineSize: number };
 
 // "Triumph Scrambler 900cc" and "scrambler900" are the same bike; "Scrambler 1200" is not
@@ -21,9 +9,15 @@ function simplify(text: string) {
   return text.toLowerCase().replace(/triumph|cc|[^a-z0-9]/g, "");
 }
 
-// The ways people write a model: its name, with or without the engine size after it.
-export function spellingsOf(model: { name: string; engineSize: number }) {
-  return [simplify(model.name), simplify(`${model.name} ${model.engineSize}`)];
+export const BIKE_MODEL_NAME_MAX_LENGTH = 60;
+
+// The ways people write a model: its name, with or without the engine size after it. A name
+// made only of what spellings drop ("Triumph", "cc", punctuation) has none: it would answer
+// to blank text.
+export function spellingsOf(model: Pick<ListedBikeModel, "name" | "engineSize">) {
+  const name = simplify(model.name);
+
+  return name === "" ? [] : [name, simplify(`${model.name} ${model.engineSize}`)];
 }
 
 // The listed model a piece of text names without ambiguity, if any.

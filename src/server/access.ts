@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import type { Prisma } from "@/generated/prisma/client";
-import { loadOfferedBikeModels } from "@/server/bike-model-list";
+import { loadOfferedBikeModels, readListedModelForWrite } from "@/server/bike-model-list";
 import { resolveBike } from "@/server/bike-models";
 import type { Database } from "@/server/db";
 import { recordName } from "@/server/display-name";
@@ -190,7 +190,8 @@ export function createAccessService(db: Database, options: AccessOptions) {
             userId,
             model: parsed.data.bikeModel,
             engineSize: parsed.data.engineSize,
-            listedModelId: bike.listedModelId,
+            listedModelId: null,
+            ...(await readListedModelForWrite(tx, bike.listedModelId)),
           },
         });
 

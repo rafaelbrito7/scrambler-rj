@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { INITIAL_BIKE_MODELS, matchBikeModel, resolveBike } from "@/server/bike-models";
+import { readFileSync } from "node:fs";
+
+import { matchBikeModel, resolveBike } from "@/server/bike-models";
+import { INITIAL_BIKE_MODELS } from "@/server/initial-bike-models";
 
 const models = INITIAL_BIKE_MODELS.map((model, index) => ({ ...model, id: `modelo-${index}` }));
 
@@ -49,6 +52,22 @@ describe("modelo da moto por lista", () => {
       engineSize: "900",
       listedModelId: null,
     });
+  });
+
+  it("texto vazio não é modelo nenhum, mesmo com um nome na lista que se reduz a nada", () => {
+    const withNoise = [...models, { id: "ruido", name: "Triumph CC", engineSize: 900 }];
+
+    expect(matchBikeModel(withNoise, "")).toBeNull();
+    expect(matchBikeModel(withNoise, "  -- ")).toBeNull();
+  });
+
+  it("a lista com que os testes começam é a que a migração grava", () => {
+    const migration = readFileSync("prisma/migrations/20261124100000_bike_models_table/migration.sql", "utf8");
+    const written = [...migration.matchAll(/\('bikemodel_[a-z0-9_]+', '([^']+)', (\d+), (\d+)\)/g)]
+      .toSorted((a, b) => Number(a[3]) - Number(b[3]))
+      .map(([, name, engineSize]) => ({ name, engineSize: Number(engineSize) }));
+
+    expect(written).toEqual(INITIAL_BIKE_MODELS);
   });
 
   it("não escolhe quando dois modelos da lista respondem pela mesma grafia", () => {

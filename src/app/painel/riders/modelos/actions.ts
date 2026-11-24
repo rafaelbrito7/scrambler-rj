@@ -18,7 +18,7 @@ async function currentAdminId() {
   return adminId;
 }
 
-const problems = { INVALID_INPUT: "invalido", DUPLICATE: "repetido", NOT_FOUND: "mudou", FORBIDDEN: "mudou" };
+const problems = { INVALID_INPUT: "invalido", DUPLICATE: "repetido", NOT_FOUND: "mudou" };
 
 async function run(change: (adminId: string) => Promise<unknown>, notice: string) {
   const adminId = await currentAdminId();
@@ -59,6 +59,10 @@ export async function changeBikeModel(formData: FormData) {
   if (change === "subir" || change === "descer") {
     await run((adminId) => bikeModels.moveModel(adminId, modelId, change === "subir" ? "up" : "down"), "movido");
   }
+
+  const isKnownChange = change === "ativar" || change === "desativar";
+
+  if (!isKnownChange) redirect(`${page}?aviso=mudou`);
 
   const isActivating = change === "ativar";
 

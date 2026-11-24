@@ -1,6 +1,9 @@
-import type { AccessService } from "@/server/access";
-import { type ListedBikeModel, spellingsOf } from "@/server/bike-models";
+import type { Prisma } from "@/generated/prisma/client";
+import { BIKE_MODEL_NAME_MAX_LENGTH, type ListedBikeModel, spellingsOf } from "@/server/bike-models";
 import type { Database } from "@/server/db";
+
+// Declared here rather than imported: the access service itself reads the list.
+type Access = { getAccess(userId: string): Promise<{ isAdmin: boolean }> };
 
 export type BikeModelInput = { name: string; engineSize: string };
 
@@ -16,20 +19,26 @@ export class BikeModelError extends Error {
   }
 }
 
-export const BIKE_MODEL_NAME_MAX_LENGTH = 60;
+// One lock for the whole list. Changing the list takes it alone; writing a bike that points
+// at a model shares it, so the bike is never left with a name the model no longer has.
+const LIST_LOCK = 7203;
 
-const listed = { id: true, name: true, engineSize: true } as const;
+const modelFields = { id: true, name: true, engineSize: true } as const;
 const inListOrder = [{ position: "asc" }, { id: "asc" }] as const;
 
 function validate(input: BikeModelInput) {
   const name = input.name.trim().replace(/\s+/g, " ");
   const engineText = input.engineSize.trim();
+  const model = { name, engineSize: Number(engineText) };
   const isValid =
-    name.length >= 2 && name.length <= BIKE_MODEL_NAME_MAX_LENGTH && /^\d{3,4}$/.test(engineText);
+    name.length >= 2 &&
+    name.length <= BIKE_MODEL_NAME_MAX_LENGTH &&
+    /^\d{3,4}$/.test(engineText) &&
+    spellingsOf(model).length > 0;
 
   if (!isValid) throw new BikeModelError("INVALID_INPUT");
 
-  return { name, engineSize: Number(engineText) };
+  return model;
 }
 
 // What a rider may pick. Anyone signed in reads it, approved or not: the join request offers
@@ -43,11 +52,23 @@ export async function loadOfferedBikeModels(
       ? { OR: [{ active: true }, { bikes: { some: { id: keepForBikeId } } }] }
       : { active: true },
     orderBy: [...inListOrder],
-    select: listed,
+    select: modelFields,
   });
 }
 
-export function createBikeModelService(db: Database, access: Pick<AccessService, "getAccess">) {
+// Called inside the transaction that writes a bike: the model's name and engine size as they
+// are now, held still until the bike is saved. Null for a bike that is not from the list.
+export async function readListedModelForWrite(tx: Prisma.TransactionClient, listedModelId: string | null) {
+  if (listedModelId === null) return null;
+
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock_shared(${LIST_LOCK})`;
+
+  const model = await tx.bikeModel.findUnique({ where: { id: listedModelId }, select: modelFields });
+
+  return model ? { model: model.name, engineSize: model.engineSize, listedModelId: model.id } : null;
+}
+
+export function createBikeModelService(db: Database, access: Access) {
   async function assertAdmin(userId: string) {
     const viewer = await access.getAccess(userId);
 
@@ -61,16 +82,14 @@ export function createBikeModelService(db: Database, access: Pick<AccessService,
   async function listAll(adminId: string): Promise<ManagedBikeModel[]> {
     await assertAdmin(adminId);
 
-    return db.bikeModel.findMany({ orderBy: [...inListOrder], select: { ...listed, active: true } });
+    return db.bikeModel.findMany({ orderBy: [...inListOrder], select: { ...modelFields, active: true } });
   }
 
-  type Transaction = Parameters<Parameters<Database["$transaction"]>[0]>[0];
+  type Transaction = Prisma.TransactionClient;
 
-  // Serialises every change to the list, so two administrators cannot both pass the check
-  // below or leave two models in the same position.
   function changingTheList<Result>(change: (tx: Transaction) => Promise<Result>) {
     return db.$transaction(async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(7203)`;
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(${LIST_LOCK})`;
 
       return change(tx);
     });
@@ -78,7 +97,11 @@ export function createBikeModelService(db: Database, access: Pick<AccessService,
 
   // Two models that answer to the same spelling could not be told apart when someone types
   // one, so the list never holds them, active or not.
-  async function assertNotConfusable(tx: Transaction, model: { name: string; engineSize: number }, ownId?: string) {
+  async function assertNotConfusable(
+    tx: Transaction,
+    model: Pick<ListedBikeModel, "name" | "engineSize">,
+    ownId?: string,
+  ) {
     const others = await tx.bikeModel.findMany({
       where: ownId ? { id: { not: ownId } } : undefined,
       select: { name: true, engineSize: true },
@@ -133,7 +156,6 @@ export function createBikeModelService(db: Database, access: Pick<AccessService,
     if (updated.count === 0) throw new BikeModelError("NOT_FOUND");
   }
 
-  // Swaps a model with its neighbour, one place up or down.
   async function moveModel(adminId: string, modelId: string, direction: "up" | "down") {
     await assertAdmin(adminId);
 

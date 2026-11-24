@@ -110,6 +110,8 @@ describe("lista de modelos no banco", () => {
     const id = await idOf(admin.id, "Scrambler 865");
 
     await expectModelError(bikeModels.addModel(admin.id, { name: "X", engineSize: "900" }), "INVALID_INPUT");
+    // "Triumph" and "cc" are dropped when spellings are compared: this name would match blank text.
+    await expectModelError(bikeModels.addModel(admin.id, { name: "Triumph CC", engineSize: "900" }), "INVALID_INPUT");
     await expectModelError(bikeModels.addModel(admin.id, { name: "Scrambler 1200 RX", engineSize: "mil" }), "INVALID_INPUT");
     await expectModelError(bikeModels.addModel(admin.id, { name: "scrambler 900cc", engineSize: "900" }), "DUPLICATE");
     await expectModelError(bikeModels.updateModel(admin.id, id, { name: "Street-Scrambler", engineSize: "900" }), "DUPLICATE");

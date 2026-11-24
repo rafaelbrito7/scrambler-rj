@@ -10,7 +10,6 @@ import { type ListedBikeModel, matchBikeModel } from "@/server/bike-models";
 const OTHER = "outro";
 
 type BikeModelFieldProps = {
-  // The models on offer, in list order, as the server read them from the database.
   models: ListedBikeModel[];
   modelName: string;
   engineName: string;
