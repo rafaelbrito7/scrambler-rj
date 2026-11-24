@@ -2,7 +2,11 @@ import type { Icon } from "@phosphor-icons/react";
 import {
   BackpackIcon,
   CameraIcon,
+  CloudFogIcon,
+  CloudIcon,
+  CloudLightningIcon,
   CloudRainIcon,
+  CloudSunIcon,
   CoffeeIcon,
   CoinsIcon,
   FlagCheckeredIcon,
@@ -16,6 +20,7 @@ import {
   PathIcon,
   RoadHorizonIcon,
   SignpostIcon,
+  SunIcon,
   TimerIcon,
   UsersThreeIcon,
 } from "@phosphor-icons/react/dist/ssr";
@@ -52,9 +57,10 @@ import { type AttendancePerson, RideError } from "@/server/rides";
 import { type Gallery, GalleryError } from "@/server/gallery";
 import { buildPointLinks, buildRouteLink } from "@/server/map-links";
 import { getOrigin } from "@/server/origin";
-import { access, gallery, rides } from "@/server/services";
+import { access, gallery, rides, weather } from "@/server/services";
 import { requireParticipant } from "@/server/session";
 import { buildRideShareText } from "@/server/share-text";
+import type { RideForecastPoint, Sky } from "@/server/weather";
 
 export const metadata: Metadata = { title: "Passeio | Scrambler RJ" };
 
@@ -84,6 +90,24 @@ const stopIcons: Record<string, Icon> = {
 };
 
 const answerLabels = { GOING: "Você vai", NOT_GOING: "Você não vai" };
+
+const skies: Record<Sky, { icon: Icon; label: string }> = {
+  clear: { icon: SunIcon, label: "Céu limpo" },
+  partly: { icon: CloudSunIcon, label: "Sol entre nuvens" },
+  cloudy: { icon: CloudIcon, label: "Nublado" },
+  fog: { icon: CloudFogIcon, label: "Neblina" },
+  rain: { icon: CloudRainIcon, label: "Chuva" },
+  storm: { icon: CloudLightningIcon, label: "Tempestade" },
+};
+
+// The weather is a courtesy: whatever goes wrong with it, the ride page still opens.
+async function findForecast(userId: string, rideId: string): Promise<RideForecastPoint[] | null> {
+  try {
+    return await weather.getRideForecast(userId, rideId);
+  } catch {
+    return null;
+  }
+}
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -165,9 +189,10 @@ function AttendanceList({ people, rideId, viewerId, canCorrect, change, changeLa
 export default async function RidePage({ params, searchParams }: PageProps) {
   const [{ id }, { aviso }] = await Promise.all([params, searchParams]);
   const viewer = await requireParticipant(`/passeios/${id}`);
-  const [ride, photoGallery, pendingCount] = await Promise.all([
+  const [ride, photoGallery, forecast, pendingCount] = await Promise.all([
     findRide(viewer.userId, id),
     findGallery(viewer.userId, id),
+    findForecast(viewer.userId, id),
     viewer.isAdmin ? access.countPending(viewer.userId) : 0,
   ]);
   const isOpen = ride.status === "OPEN";
@@ -205,6 +230,7 @@ export default async function RidePage({ params, searchParams }: PageProps) {
   const hasPackingNote = ride.packingNote !== null;
   const hasPacking = hasTips || hasPackingNote;
   const hasPlanB = ride.planB !== null;
+  const hasForecast = forecast !== null;
   const mapPoints = ride.stops.flatMap((stop, index) =>
     stop.lat !== null && stop.lon !== null
       ? [{ lat: stop.lat, lon: stop.lon, number: index + 1, name: stop.name }]
@@ -322,6 +348,51 @@ export default async function RidePage({ params, searchParams }: PageProps) {
                   paradas no caminho.
                 </p>
               )}
+            </section>
+          )}
+
+          {hasForecast && (
+            <section aria-labelledby="weather-title">
+              <h2 id="weather-title" className="mb-4 flex items-center gap-3 border-b border-border pb-3">
+                <CloudSunIcon aria-hidden weight="fill" className="size-5 text-highlight" />
+                <span className="label text-foreground">Tempo no dia</span>
+              </h2>
+              <ul className="grid gap-2">
+                {forecast.map((point) => {
+                  const sky = skies[point.sky];
+                  const SkyIcon = sky.icon;
+
+                  return (
+                    <li key={point.label} className="flex items-center gap-4 rounded-sm bg-card p-4">
+                      <SkyIcon aria-hidden className="size-8 shrink-0 text-highlight" />
+                      <div className="min-w-0 flex-1">
+                        <p className="label text-muted-foreground">
+                          {point.label} · {formatRideTime(point.at)}
+                        </p>
+                        <p className="truncate font-semibold">{point.place}</p>
+                        <p className="text-sm text-cream-dim">
+                          {sky.label} · {point.rainChance}% de chance de chuva
+                        </p>
+                      </div>
+                      <p className="display shrink-0 text-3xl">
+                        {point.temperatureC}°<span className="sr-only"> graus</span>
+                      </p>
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="mt-2 text-sm text-cream-dim">
+                Previsão do{" "}
+                <a
+                  href="https://open-meteo.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline underline-offset-4 hover:text-highlight"
+                >
+                  Open-Meteo
+                </a>
+                , atualizada a cada três horas. Pode mudar até o dia.
+              </p>
             </section>
           )}
 

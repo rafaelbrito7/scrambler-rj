@@ -10,6 +10,7 @@ import { createProfileService } from "@/server/profiles";
 import { createRecipeService } from "@/server/recipes";
 import { createRideService } from "@/server/rides";
 import { shrinkGalleryPhoto } from "@/server/shrink-photo";
+import { createWeatherService, openMeteo } from "@/server/weather";
 
 export const access = createAccessService(db, {
   adminEmails: (process.env.ADMIN_EMAILS ?? "").split(","),
@@ -30,3 +31,5 @@ export const photos = createDiskPhotoStorage(
 export const profiles = createProfileService(db, access, photos);
 
 export const gallery = createGalleryService(db, access, rides, photos, shrinkGalleryPhoto);
+
+export const weather = createWeatherService(access, rides, openMeteo);
