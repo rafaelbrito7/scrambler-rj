@@ -14,6 +14,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import type { ListedBikeModel } from "@/server/bike-models";
 import type { JoinRequestField } from "@/server/access";
 
 type FieldConfig = {
@@ -39,7 +40,9 @@ const fields: FieldConfig[] = [
   },
 ];
 
-export function JoinRequestForm({ defaultName }: { defaultName: string }) {
+type JoinRequestFormProps = { defaultName: string; bikeModels: ListedBikeModel[] };
+
+export function JoinRequestForm({ defaultName, bikeModels }: JoinRequestFormProps) {
   const initialState: JoinRequestFormState = {
     values: { fullName: defaultName, whatsapp: "", bikeModel: "", engineSize: "" },
     fieldErrors: {},
@@ -85,6 +88,7 @@ export function JoinRequestForm({ defaultName }: { defaultName: string }) {
         })}
 
         <BikeModelField
+          models={bikeModels}
           modelName="bikeModel"
           engineName="engineSize"
           initialModel={state.values.bikeModel}

@@ -5,11 +5,13 @@ import { useState } from "react";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { BIKE_MODELS, matchBikeModel } from "@/server/bike-models";
+import { type ListedBikeModel, matchBikeModel } from "@/server/bike-models";
 
 const OTHER = "outro";
 
 type BikeModelFieldProps = {
+  // The models on offer, in list order, as the server read them from the database.
+  models: ListedBikeModel[];
   modelName: string;
   engineName: string;
   initialModel: string;
@@ -21,6 +23,7 @@ type BikeModelFieldProps = {
 // One control for the bike in the join request and in the profile: pick a listed Scrambler,
 // which brings its engine size, or say "Outro" and type both.
 export function BikeModelField({
+  models,
   modelName,
   engineName,
   initialModel,
@@ -28,10 +31,10 @@ export function BikeModelField({
   modelError,
   engineError,
 }: BikeModelFieldProps) {
-  const listed = matchBikeModel(initialModel);
+  const listed = matchBikeModel(models, initialModel);
   const initialChoice = listed?.name ?? (initialModel.trim() ? OTHER : "");
   const [choice, setChoice] = useState(initialChoice);
-  const chosen = BIKE_MODELS.find((model) => model.name === choice);
+  const chosen = models.find((model) => model.name === choice);
   const isOther = choice === OTHER;
   const isListed = chosen !== undefined;
   const hasModelError = Boolean(modelError);
@@ -54,8 +57,8 @@ export function BikeModelField({
           aria-labelledby={`${modelName}-label`}
           aria-describedby={`${modelName}-hint`}
         >
-          {BIKE_MODELS.map((model) => (
-            <ToggleGroupItem key={model.name} value={model.name}>
+          {models.map((model) => (
+            <ToggleGroupItem key={model.id} value={model.name}>
               {model.name}
             </ToggleGroupItem>
           ))}

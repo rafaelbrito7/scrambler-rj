@@ -15,6 +15,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import type { ListedBikeModel } from "@/server/bike-models";
 import type { BikeField, BikeInput } from "@/server/profiles";
 
 type FieldConfig = {
@@ -42,13 +43,14 @@ const fields: FieldConfig[] = [
 
 type BikeFormProps = {
   initial: BikeInput;
+  bikeModels: ListedBikeModel[];
   bikeId?: string;
   submitLabel: string;
   hasPhoto: boolean;
   currentPhoto?: React.ReactNode;
 };
 
-export function BikeForm({ initial, bikeId, submitLabel, hasPhoto, currentPhoto }: BikeFormProps) {
+export function BikeForm({ initial, bikeModels, bikeId, submitLabel, hasPhoto, currentPhoto }: BikeFormProps) {
   const initialState: BikeFormState = {
     values: initial,
     fieldErrors: {},
@@ -67,6 +69,7 @@ export function BikeForm({ initial, bikeId, submitLabel, hasPhoto, currentPhoto 
         {hasFormError && <Alert variant="destructive">{state.formError}</Alert>}
 
         <BikeModelField
+          models={bikeModels}
           modelName="model"
           engineName="engineSize"
           initialModel={state.values.model}

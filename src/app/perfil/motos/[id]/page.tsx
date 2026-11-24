@@ -12,7 +12,7 @@ import { BackLink } from "@/components/app/back-link";
 import { Alert } from "@/components/ui/alert";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { groupMods, MAX_MODS_PER_BIKE } from "@/server/bike-models";
-import { access, profiles } from "@/server/services";
+import { access, bikeModels, profiles } from "@/server/services";
 import { requireState } from "@/server/session";
 
 export const metadata: Metadata = { title: "Editar moto | Scrambler RJ" };
@@ -30,10 +30,10 @@ const notices: Record<string, string> = {
 
 export default async function EditBikePage({ params, searchParams }: PageProps) {
   const viewer = await requireState("approved");
-  const [{ id }, { item, aviso }, profile, pendingCount] = await Promise.all([
-    params,
-    searchParams,
+  const [{ id }, { item, aviso }] = await Promise.all([params, searchParams]);
+  const [profile, offeredModels, pendingCount] = await Promise.all([
     profiles.getOwnProfile(viewer.userId),
+    bikeModels.listOffered(id),
     viewer.isAdmin ? access.countPending(viewer.userId) : 0,
   ]);
   const bike = profile.bikes.find((candidate) => candidate.id === id);
@@ -64,6 +64,7 @@ export default async function EditBikePage({ params, searchParams }: PageProps) 
           nickname: bike.nickname ?? "",
           rangeKm: bike.rangeKm ? String(bike.rangeKm) : "",
         }}
+        bikeModels={offeredModels}
         hasPhoto={bike.photoKey !== null}
         currentPhoto={<BikePhoto photoKey={bike.photoKey} className="w-40" />}
         submitLabel="Salvar moto"

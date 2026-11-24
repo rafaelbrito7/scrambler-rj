@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { createAccessService } from "@/server/access";
 import { createBatchService } from "@/server/batches";
+import { createBikeModelService } from "@/server/bike-model-list";
 import { db } from "@/server/db";
 import { createGalleryService } from "@/server/gallery";
 import { createOrderService } from "@/server/orders";
@@ -17,6 +18,8 @@ export const access = createAccessService(db, {
 });
 
 export const batches = createBatchService(db, access);
+
+export const bikeModels = createBikeModelService(db, access);
 
 export const orders = createOrderService(db, access);
 

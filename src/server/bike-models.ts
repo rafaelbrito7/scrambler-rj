@@ -1,7 +1,8 @@
-// The Scrambler models the group rides, shared by the server and the browser forms. Keep this
-// file free of server-only imports. Changing the list is a code change, and the same names
-// are written by the data migration that sorted the bikes registered as free text.
-export const BIKE_MODELS = [
+// Pure pieces about bikes, shared by the server and the browser forms. Keep this file free of
+// server-only imports. The list of models itself lives in the database, kept by administrators.
+
+// The list the platform started with: what the first migration wrote and what tests reset to.
+export const INITIAL_BIKE_MODELS = [
   { name: "Scrambler 400 X", engineSize: 400 },
   { name: "Scrambler 400 XC", engineSize: 400 },
   { name: "Scrambler 900", engineSize: 900 },
@@ -12,7 +13,7 @@ export const BIKE_MODELS = [
   { name: "Scrambler 865", engineSize: 865 },
 ];
 
-export type BikeModel = (typeof BIKE_MODELS)[number];
+export type ListedBikeModel = { id: string; name: string; engineSize: number };
 
 // "Triumph Scrambler 900cc" and "scrambler900" are the same bike; "Scrambler 1200" is not
 // any single one of the three 1200s.
@@ -20,25 +21,26 @@ function simplify(text: string) {
   return text.toLowerCase().replace(/triumph|cc|[^a-z0-9]/g, "");
 }
 
-const modelsBySpelling = new Map<string, BikeModel>(
-  BIKE_MODELS.flatMap((model) => [
-    [simplify(model.name), model],
-    [simplify(`${model.name} ${model.engineSize}`), model],
-  ]),
-);
+// The ways people write a model: its name, with or without the engine size after it.
+export function spellingsOf(model: { name: string; engineSize: number }) {
+  return [simplify(model.name), simplify(`${model.name} ${model.engineSize}`)];
+}
 
 // The listed model a piece of text names without ambiguity, if any.
-export function matchBikeModel(text: string): BikeModel | null {
-  return modelsBySpelling.get(simplify(text)) ?? null;
+export function matchBikeModel(models: ListedBikeModel[], text: string): ListedBikeModel | null {
+  const spelling = simplify(text);
+  const named = models.filter((model) => spellingsOf(model).includes(spelling));
+
+  return named.length === 1 ? named[0] : null;
 }
 
 // A listed model always carries its own engine size; anything else keeps what was typed.
-export function resolveBike(model: string, engineSize: string) {
-  const listed = matchBikeModel(model);
+export function resolveBike(models: ListedBikeModel[], model: string, engineSize: string) {
+  const listed = matchBikeModel(models, model);
 
   return listed
-    ? { model: listed.name, engineSize: String(listed.engineSize), isListed: true }
-    : { model: model.trim(), engineSize: engineSize.trim(), isListed: false };
+    ? { model: listed.name, engineSize: String(listed.engineSize), listedModelId: listed.id }
+    : { model: model.trim(), engineSize: engineSize.trim(), listedModelId: null };
 }
 
 type DescribedBike = {

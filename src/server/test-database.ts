@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+import { INITIAL_BIKE_MODELS } from "@/server/bike-models";
 import { createDatabase, type Database } from "@/server/db";
 
 export function connectTestDatabase(): Database {
@@ -21,4 +22,9 @@ export async function resetDatabase(db: Database) {
   await db.accessDecision.deleteMany();
   await db.joinRequest.deleteMany();
   await db.user.deleteMany();
+  // Back to the list the platform starts with, as the migration writes it.
+  await db.bikeModel.deleteMany();
+  await db.bikeModel.createMany({
+    data: INITIAL_BIKE_MODELS.map((model, position) => ({ ...model, position })),
+  });
 }

@@ -359,12 +359,33 @@ model Bike {
   rangeKm    Int?
   photoKey   String?
   createdAt  DateTime @default(now())
+  // Set when the bike is one of the listed models. `model` and `engineSize` then mirror the
+  // list, and follow it when an administrator renames a model or corrects its engine size.
+  listedModelId String?
 
-  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  mainOf Profile? @relation("MainBike")
-  mods   BikeMod[]
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mainOf      Profile?   @relation("MainBike")
+  mods        BikeMod[]
+  listedModel BikeModel? @relation(fields: [listedModelId], references: [id], onDelete: Restrict)
+
+  @@index([listedModelId])
 
   @@index([userId, createdAt])
+}
+
+// The Scrambler models riders pick from, kept by administrators. Never deleted, only
+// deactivated, so bikes that already use one keep showing it.
+model BikeModel {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  engineSize Int
+  position   Int
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  bikes Bike[]
+
+  @@index([active, position])
 }
 
 model BikeMod {
