@@ -35,6 +35,11 @@
 - O mapa usa MapLibre com a Stadia Maps. Os termos da Stadia proíbem guardar no servidor o resultado da rota, e guardar coordenadas da busca de lugares exige plano pago: a rota é pedida pelo navegador a cada visita (`RideMap`) e as paradas são marcadas pelo administrador tocando no mapa (`PinPicker`). Não grave no banco nada que venha da API de rota ou de busca da Stadia. O traçado de um arquivo GPX enviado pelo administrador é dado do grupo e fica guardado no passeio (`Ride.track`); com ele, o mapa não pede rota ao provedor.
 - Nenhuma chave vai para o navegador; a autorização é por domínio (em `localhost` funciona sem cadastro). O worker da biblioteca é copiado para `public/maplibre` pelo `postinstall`.
 
+## Previsão do tempo
+
+- A previsão vem do Open-Meteo, sem chave, e é pedida só pelo servidor (`src/server/weather.ts`). O uso gratuito é para fins não comerciais e os dados pedem crédito: não tire o crédito da página do passeio.
+- O provedor entra por interface (`WeatherProvider`); os testes usam um substituto e nunca chamam a rede.
+
 ## Entrada
 
 - Todo mundo entra pela raiz, com a mesma tela e o mesmo botão (decisão do usuário em 2026-11-23). Não existe entrada separada de administrador; `/painel/entrar` foi removido e não deve voltar. O que o administrador vê a mais (o item "Painel" no menu, "Gerenciar passeio", a ficha completa) vem da conta, e o servidor confere a permissão em cada página e ação.

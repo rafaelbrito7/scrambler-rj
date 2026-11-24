@@ -100,7 +100,8 @@ const skies: Record<Sky, { icon: Icon; label: string }> = {
   storm: { icon: CloudLightningIcon, label: "Tempestade" },
 };
 
-// The weather is a courtesy: whatever goes wrong with it, the ride page still opens.
+const forecastLabels = { meeting: "Encontro", destination: "Destino" };
+
 async function findForecast(userId: string, rideId: string): Promise<RideForecastPoint[] | null> {
   try {
     return await weather.getRideForecast(userId, rideId);
@@ -363,11 +364,11 @@ export default async function RidePage({ params, searchParams }: PageProps) {
                   const SkyIcon = sky.icon;
 
                   return (
-                    <li key={point.label} className="flex items-center gap-4 rounded-sm bg-card p-4">
+                    <li key={point.kind} className="flex items-center gap-4 rounded-sm bg-card p-4">
                       <SkyIcon aria-hidden className="size-8 shrink-0 text-highlight" />
                       <div className="min-w-0 flex-1">
                         <p className="label text-muted-foreground">
-                          {point.label} · {formatRideTime(point.at)}
+                          {forecastLabels[point.kind]} · {formatRideTime(point.at)}
                         </p>
                         <p className="truncate font-semibold">{point.place}</p>
                         <p className="text-sm text-cream-dim">
@@ -387,11 +388,11 @@ export default async function RidePage({ params, searchParams }: PageProps) {
                   href="https://open-meteo.com/"
                   target="_blank"
                   rel="noreferrer"
-                  className="underline underline-offset-4 hover:text-highlight"
+                  className="underline decoration-border underline-offset-4 hover:text-highlight hover:decoration-primary"
                 >
                   Open-Meteo
                 </a>
-                , atualizada a cada três horas. Pode mudar até o dia.
+                . Pode mudar até o dia.
               </p>
             </section>
           )}
