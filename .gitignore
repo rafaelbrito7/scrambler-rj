@@ -1,0 +1,18 @@
+node_modules
+.next
+next-env.d.ts
+*.tsbuildinfo
+.env*
+!.env.example
+.impeccable/config.local.json
+
+src/generated
+.data
+.DS_Store
+
+# Copied from node_modules by the postinstall script.
+public/maplibre
+.impeccable/hook.cache.json
+
+# Photos of people from the group: kept on the machine, never published.
+assets/photos

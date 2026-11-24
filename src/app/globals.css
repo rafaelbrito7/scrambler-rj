@@ -1,0 +1,265 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme {
+  --color-asphalt: #0c0b0a;
+  --color-asphalt-raised: #171513;
+  --color-ember: #d4551f;
+  --color-ember-hot: #ea6a2e;
+  --color-cream: #f0dfbd;
+  --color-cream-dim: #b8a98b;
+  --color-alert: #ff8f6b;
+
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@utility display {
+  font-family: var(--font-display);
+  font-stretch: 62%;
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+@utility label {
+  font-family: var(--font-display);
+  font-stretch: 75%;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    scrollbar-color: var(--color-ember) var(--color-asphalt);
+  }
+
+  body {
+    background: var(--color-asphalt);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-ember);
+    color: var(--color-asphalt);
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  input::placeholder {
+    color: color-mix(in oklab, var(--color-cream-dim) 70%, transparent);
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+/* Opening sequence: the logo assembles on black, bike first, then the page is revealed. */
+.logo-intro {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .logo-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.25rem, 3vmin, 2rem);
+    background: var(--color-asphalt);
+    animation: logo-intro-exit 500ms ease-out 3000ms both;
+  }
+
+  .logo-intro:not([data-ready]),
+  .logo-intro:not([data-ready]) * {
+    animation-play-state: paused;
+  }
+
+  .logo-intro[data-skipped] {
+    animation: logo-intro-exit 220ms ease-out both;
+    animation-play-state: running;
+  }
+
+  .logo-intro-mark {
+    position: relative;
+    width: min(64vmin, 26rem);
+    aspect-ratio: 1;
+  }
+
+  .logo-intro-layer {
+    animation: var(--enter) var(--time) var(--ease-out-expo) var(--wait) both;
+  }
+
+  .logo-intro-layer[data-part="bike"] {
+    --enter: logo-intro-bike;
+    --time: 700ms;
+    --wait: 150ms;
+  }
+
+  .logo-intro-layer[data-part="rider"] {
+    --enter: logo-intro-rider;
+    --time: 550ms;
+    --wait: 650ms;
+  }
+
+  .logo-intro-layer[data-part="scenery"] {
+    --enter: logo-intro-scenery;
+    --time: 700ms;
+    --wait: 1050ms;
+  }
+
+  .logo-intro-layer[data-part="ring"] {
+    --enter: logo-intro-ring;
+    --time: 650ms;
+    --wait: 1250ms;
+  }
+
+  .logo-intro-layer[data-part="lettering"] {
+    --enter: logo-intro-lettering;
+    --time: 600ms;
+    --wait: 1450ms;
+  }
+
+  .logo-intro-layer[data-part="badge"] {
+    --enter: logo-intro-badge;
+    --time: 500ms;
+    --wait: 1600ms;
+  }
+
+  .logo-intro-name {
+    font-size: clamp(1.75rem, 5vmin, 2.75rem);
+    letter-spacing: 0.04em;
+    animation: logo-intro-name 500ms var(--ease-out-expo) 1900ms both;
+  }
+}
+
+@keyframes logo-intro-bike {
+  from {
+    opacity: 0;
+    translate: -14% 0;
+  }
+}
+
+@keyframes logo-intro-rider {
+  from {
+    opacity: 0;
+    translate: 0 -9%;
+  }
+}
+
+@keyframes logo-intro-scenery {
+  from {
+    opacity: 0;
+    scale: 0.92;
+  }
+}
+
+@keyframes logo-intro-ring {
+  from {
+    opacity: 0;
+    scale: 1.07;
+  }
+}
+
+@keyframes logo-intro-lettering {
+  from {
+    opacity: 0;
+    rotate: -9deg;
+  }
+}
+
+@keyframes logo-intro-badge {
+  from {
+    opacity: 0;
+    translate: 0 5%;
+  }
+}
+
+@keyframes logo-intro-name {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
+}
+
+@keyframes logo-intro-exit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* shadcn/ui roles, mapped onto the group palette. The interface has one dark scheme. */
+@theme inline {
+  --font-heading: var(--font-display);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-highlight: var(--highlight);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
+  --radius-3xl: 2px;
+  --radius-4xl: 2px;
+}
+
+:root {
+  --radius: 2px;
+  --background: var(--color-asphalt);
+  --foreground: var(--color-cream);
+  --card: var(--color-asphalt-raised);
+  --card-foreground: var(--color-cream);
+  --popover: var(--color-asphalt-raised);
+  --popover-foreground: var(--color-cream);
+  --primary: var(--color-ember);
+  --primary-hover: var(--color-ember-hot);
+  /* Orange that stays readable as text on both dark surfaces. */
+  --highlight: var(--color-ember-hot);
+  --primary-foreground: var(--color-asphalt);
+  --secondary: #262320;
+  --secondary-foreground: var(--color-cream);
+  --muted: var(--color-asphalt-raised);
+  --muted-foreground: var(--color-cream-dim);
+  --accent: #262320;
+  --accent-foreground: var(--color-cream);
+  --destructive: var(--color-alert);
+  --border: rgb(240 223 189 / 0.15);
+  --input: rgb(240 223 189 / 0.35);
+  --ring: var(--color-cream);
+}

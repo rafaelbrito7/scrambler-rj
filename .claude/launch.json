@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "scrambler-rj",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": [
+        "-c",
+        "PATH=\"$HOME/.nvm/versions/node/v22.21.1/bin:$PATH\" pnpm dev --port 3107"
+      ],
+      "port": 3107
+    }
+  ]
+}

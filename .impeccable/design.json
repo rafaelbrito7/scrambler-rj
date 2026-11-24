@@ -1,0 +1,497 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T21:30:00Z",
+  "title": "Design System: Scrambler RJ",
+  "extensions": {
+    "colorMeta": {
+      "ember": {
+        "role": "primary",
+        "displayName": "Laranja do Logo",
+        "canonical": "#d4551f",
+        "tonalRamp": [
+          "oklch(15% 0.060 41)",
+          "oklch(26% 0.103 41)",
+          "oklch(38% 0.146 41)",
+          "oklch(50% 0.172 41)",
+          "oklch(62% 0.172 41)",
+          "oklch(74% 0.138 41)",
+          "oklch(85% 0.086 41)",
+          "oklch(95% 0.043 41)"
+        ],
+        "purpose": "Ação principal, sublinhado das ações secundárias, traço da aba atual, borda do selo Pendente."
+      },
+      "ember-hot": {
+        "role": "primary",
+        "displayName": "Laranja Aceso",
+        "canonical": "#ea6a2e",
+        "tonalRamp": [
+          "oklch(15% 0.061 43)",
+          "oklch(26% 0.104 43)",
+          "oklch(38% 0.148 43)",
+          "oklch(50% 0.174 43)",
+          "oklch(62% 0.174 43)",
+          "oklch(74% 0.139 43)",
+          "oklch(85% 0.087 43)",
+          "oklch(95% 0.043 43)"
+        ],
+        "purpose": "O laranja que funciona como texto e o hover das ações."
+      },
+      "alert": {
+        "role": "tertiary",
+        "displayName": "Coral de Alerta",
+        "canonical": "#ff8f6b",
+        "tonalRamp": [
+          "oklch(15% 0.052 38)",
+          "oklch(26% 0.090 38)",
+          "oklch(38% 0.128 38)",
+          "oklch(50% 0.150 38)",
+          "oklch(62% 0.150 38)",
+          "oklch(74% 0.120 38)",
+          "oklch(85% 0.075 38)",
+          "oklch(95% 0.037 38)"
+        ],
+        "purpose": "Erro, problema e confirmação de ação sem volta."
+      },
+      "asphalt": {
+        "role": "neutral",
+        "displayName": "Preto Quente",
+        "canonical": "#0c0b0a",
+        "tonalRamp": [
+          "oklch(15% 0.001 68)",
+          "oklch(26% 0.002 68)",
+          "oklch(38% 0.003 68)",
+          "oklch(50% 0.004 68)",
+          "oklch(62% 0.004 68)",
+          "oklch(74% 0.003 68)",
+          "oklch(85% 0.002 68)",
+          "oklch(95% 0.001 68)"
+        ]
+      },
+      "asphalt-raised": {
+        "role": "neutral",
+        "displayName": "Asfalto Elevado",
+        "canonical": "#171513",
+        "tonalRamp": [
+          "oklch(15% 0.002 68)",
+          "oklch(26% 0.004 68)",
+          "oklch(38% 0.005 68)",
+          "oklch(50% 0.006 68)",
+          "oklch(62% 0.006 68)",
+          "oklch(74% 0.005 68)",
+          "oklch(85% 0.003 68)",
+          "oklch(95% 0.002 68)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Creme do Logo",
+        "canonical": "#f0dfbd",
+        "tonalRamp": [
+          "oklch(15% 0.017 85)",
+          "oklch(26% 0.030 85)",
+          "oklch(38% 0.043 85)",
+          "oklch(50% 0.050 85)",
+          "oklch(62% 0.050 85)",
+          "oklch(74% 0.040 85)",
+          "oklch(85% 0.025 85)",
+          "oklch(95% 0.013 85)"
+        ]
+      },
+      "cream-dim": {
+        "role": "neutral",
+        "displayName": "Creme Apagado",
+        "canonical": "#b8a98b",
+        "tonalRamp": [
+          "oklch(15% 0.016 85)",
+          "oklch(26% 0.027 85)",
+          "oklch(38% 0.038 85)",
+          "oklch(50% 0.045 85)",
+          "oklch(62% 0.045 85)",
+          "oklch(74% 0.036 85)",
+          "oklch(85% 0.022 85)",
+          "oklch(95% 0.011 85)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Título único das telas de entrada, de situação e de página não encontrada."
+      },
+      "display-shell": {
+        "displayName": "Display, área logada",
+        "purpose": "Título único de cada página da área logada; no perfil, o apelido ou o nome."
+      },
+      "display-card": {
+        "displayName": "Display de cartão",
+        "purpose": "Nome da campanha no cartão do Início e iniciais do avatar."
+      },
+      "intro-name": {
+        "displayName": "Nome da abertura",
+        "purpose": "\"Scrambler RJ\" sob o logo, só na abertura."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Preços, totais, valores de produção e horários, com algarismos tabulares."
+      },
+      "body-strong": {
+        "displayName": "Body strong",
+        "purpose": "Nomes em listas e cartões e a frase que diz a situação da pessoa."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto de apoio, valores de perfil e texto digitado."
+      },
+      "body-sm": {
+        "displayName": "Body small",
+        "purpose": "Dicas, erros de campo, linhas secundárias e histórico."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Botões, rótulos de campo, navegação, títulos de seção e termos."
+      },
+      "label-badge": {
+        "displayName": "Label de selo",
+        "purpose": "Texto dos selos de situação."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Curva de todas as entradas da abertura do logo."
+      },
+      {
+        "name": "intro-1-bike",
+        "value": "700ms cubic-bezier(0.16, 1, 0.3, 1) 150ms; from opacity 0, translate -14% 0",
+        "purpose": "Abertura, passo 1: a moto entra da esquerda."
+      },
+      {
+        "name": "intro-2-rider",
+        "value": "550ms cubic-bezier(0.16, 1, 0.3, 1) 650ms; from opacity 0, translate 0 -9%",
+        "purpose": "Abertura, passo 2: o piloto desce sobre a moto."
+      },
+      {
+        "name": "intro-3-scenery",
+        "value": "700ms cubic-bezier(0.16, 1, 0.3, 1) 1050ms; from opacity 0, scale 0.92",
+        "purpose": "Abertura, passo 3: o cenário cresce atrás."
+      },
+      {
+        "name": "intro-4-ring",
+        "value": "650ms cubic-bezier(0.16, 1, 0.3, 1) 1250ms; from opacity 0, scale 1.07",
+        "purpose": "Abertura, passo 4: o anel fecha em volta."
+      },
+      {
+        "name": "intro-5-lettering",
+        "value": "600ms cubic-bezier(0.16, 1, 0.3, 1) 1450ms; from opacity 0, rotate -9deg",
+        "purpose": "Abertura, passo 5: as letras giram até o lugar."
+      },
+      {
+        "name": "intro-6-badge",
+        "value": "500ms cubic-bezier(0.16, 1, 0.3, 1) 1600ms; from opacity 0, translate 0 5%",
+        "purpose": "Abertura, passo 6: o selo RJ sobe."
+      },
+      {
+        "name": "intro-7-name",
+        "value": "500ms cubic-bezier(0.16, 1, 0.3, 1) 1900ms; from opacity 0, translate 0 0.5rem",
+        "purpose": "Abertura, passo 7: o nome Scrambler RJ aparece sob o logo."
+      },
+      {
+        "name": "intro-8-exit",
+        "value": "500ms ease-out 3000ms; to opacity 0, visibility hidden",
+        "purpose": "Abertura, passo 8: a camada some e revela a tela."
+      },
+      {
+        "name": "intro-skip-exit",
+        "value": "220ms ease-out; to opacity 0, visibility hidden",
+        "purpose": "Saída antecipada por clique, tecla, rolagem ou arrasto."
+      },
+      {
+        "name": "intro-load-deadline",
+        "value": "2500ms",
+        "purpose": "Espera máxima pelas seis camadas antes de a sequência começar mesmo assim."
+      },
+      {
+        "name": "control-color",
+        "value": "color, background-color, border-color 200ms",
+        "purpose": "Transição de botões, opções e campos. O contorno de foco fica fora dela."
+      },
+      {
+        "name": "photo-crossfade",
+        "value": "opacity 200ms",
+        "purpose": "Troca da foto ao escolher outra cor na página da campanha; todas as fotos ficam montadas."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Ação principal, uma por contexto: enviar pedido, marcar como pago, abrir campanha, Vou.",
+      "html": "<button class=\"ds-btn\">Fazer pedido</button>",
+      "css": ".ds-btn { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 3rem; cursor: pointer; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 2px; padding: 0 1.25rem; border: 1px solid transparent; transition: color 200ms, background-color 200ms, border-color 200ms; background: var(--color-ember, #d4551f); color: var(--color-asphalt, #0c0b0a); } .ds-btn:hover { background: var(--color-ember-hot, #ea6a2e); } .ds-btn:focus-visible { outline: 2px solid var(--color-cream, #f0dfbd); outline-offset: 3px; } .ds-btn:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Ação alternativa ao lado da principal: fechar campanha, baixar PDF, abrir no mapa, Não vou.",
+      "html": "<button class=\"ds-btn-outline\">Baixar PDF</button>",
+      "css": ".ds-btn-outline { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 3rem; cursor: pointer; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 2px; padding: 0 1.25rem; border: 1px solid transparent; transition: color 200ms, background-color 200ms, border-color 200ms; background: transparent; color: var(--color-cream, #f0dfbd); border-color: color-mix(in oklab, var(--color-cream, #f0dfbd) 70%, transparent); } .ds-btn-outline:hover { border-color: var(--color-cream, #f0dfbd); background: color-mix(in oklab, var(--color-cream, #f0dfbd) 10%, transparent); } .ds-btn-outline:focus-visible { outline: 2px solid var(--color-cream, #f0dfbd); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Ação secundária: editar, trocar, ver, remover, cancelar. Texto creme com sublinhado laranja.",
+      "html": "<button class=\"ds-btn-ghost\">Editar pedido</button>",
+      "css": ".ds-btn-ghost { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 2.75rem; cursor: pointer; align-items: center; background: transparent; border: 0; padding: 0; color: var(--color-cream, #f0dfbd); text-decoration: underline; text-decoration-color: var(--color-ember, #d4551f); text-decoration-thickness: 2px; text-underline-offset: 6px; transition: color 200ms; } .ds-btn-ghost:hover { color: var(--color-ember-hot, #ea6a2e); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--color-cream, #f0dfbd); outline-offset: 3px; }"
+    },
+    {
+      "name": "Confirm In Place",
+      "kind": "custom",
+      "refersTo": "button-destructive",
+      "description": "Confirmação de ação sem volta, no próprio lugar do gatilho: pergunta, botão coral e desistência.",
+      "html": "<div class=\"ds-confirm\"><p>Cancelar o pedido de Rafa? Ele sai das contas da campanha e fica no histórico.</p><div class=\"ds-confirm-actions\"><button class=\"ds-btn-danger\">Sim, cancelar pedido</button><button class=\"ds-confirm-keep\">Manter pedido</button></div></div>",
+      "css": ".ds-confirm { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); color: var(--color-cream, #f0dfbd); border-top: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); padding-top: 1rem; max-width: 28rem; } .ds-confirm p { margin: 0; line-height: 1.5; } .ds-confirm-actions { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.75rem; align-items: center; } .ds-btn-danger { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 3rem; cursor: pointer; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 2px; padding: 0 1.25rem; border: 1px solid transparent; transition: color 200ms, background-color 200ms, border-color 200ms; background: color-mix(in oklab, var(--color-alert, #ff8f6b) 10%, transparent); color: var(--color-alert, #ff8f6b); border-color: var(--color-alert, #ff8f6b); } .ds-btn-danger:hover { background: color-mix(in oklab, var(--color-alert, #ff8f6b) 20%, transparent); } .ds-confirm-keep { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; background: transparent; border: 0; padding: 0; min-height: 2.75rem; cursor: pointer; color: var(--color-cream, #f0dfbd); text-decoration: underline; text-decoration-color: var(--color-ember, #d4551f); text-decoration-thickness: 2px; text-underline-offset: 6px; }"
+    },
+    {
+      "name": "Status Badges",
+      "kind": "chip",
+      "refersTo": "badge-settled",
+      "description": "Selos de situação: resolvido ou ativo, esperando alguém, fato neutro, problema. O texto sempre diz a situação.",
+      "html": "<div class=\"ds-badges\"><span class=\"ds-badge ds-badge-settled\">Pago</span><span class=\"ds-badge ds-badge-attention\">Pendente</span><span class=\"ds-badge ds-badge-neutral\">Seu tamanho</span><span class=\"ds-badge ds-badge-problem\">Cancelado</span></div>",
+      "css": ".ds-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; } .ds-badge { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; display: inline-flex; align-items: center; border-radius: 2px; border: 1px solid; padding: 0.25rem 0.5rem; white-space: nowrap; } .ds-badge-settled { background: var(--color-cream, #f0dfbd); border-color: var(--color-cream, #f0dfbd); color: var(--color-asphalt, #0c0b0a); } .ds-badge-attention { background: color-mix(in oklab, var(--color-ember, #d4551f) 15%, transparent); border-color: var(--color-ember, #d4551f); color: var(--color-ember-hot, #ea6a2e); } .ds-badge-neutral { background: transparent; border-color: color-mix(in oklab, var(--color-cream, #f0dfbd) 50%, transparent); color: var(--color-cream, #f0dfbd); } .ds-badge-problem { background: color-mix(in oklab, var(--color-alert, #ff8f6b) 10%, transparent); border-color: var(--color-alert, #ff8f6b); color: var(--color-alert, #ff8f6b); }"
+    },
+    {
+      "name": "Avatar",
+      "kind": "custom",
+      "refersTo": "avatar-initials",
+      "description": "O rosto da pessoa: foto enviada, foto da conta Google ou iniciais em creme. Três tamanhos.",
+      "html": "<div class=\"ds-avatars\"><span class=\"ds-avatar ds-avatar-lg\" role=\"img\" aria-label=\"Iniciais de Ana Reis\">AR</span><span class=\"ds-avatar\" role=\"img\" aria-label=\"Iniciais de Rafa\">R</span><span class=\"ds-avatar ds-avatar-sm\" role=\"img\" aria-label=\"Iniciais de Bia Luz\">BL</span></div>",
+      "css": ".ds-avatars { display: flex; align-items: center; gap: 1rem; } .ds-avatar { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 62%; font-weight: 800; line-height: 0.96; letter-spacing: 0.005em; text-transform: uppercase; display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 9999px; background: var(--color-cream, #f0dfbd); color: var(--color-asphalt, #0c0b0a); width: 3.5rem; height: 3.5rem; font-size: 1.125rem; } .ds-avatar-lg { width: 6rem; height: 6rem; font-size: 1.875rem; } .ds-avatar-sm { width: 2.5rem; height: 2.5rem; font-size: 0.875rem; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Campo com rótulo, dica e erro. O valor digitado é preservado quando o envio é recusado.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-ig\">Instagram</label><input id=\"ds-ig\" placeholder=\"@usuario\" /><p class=\"ds-hint\">Opcional. Digite o usuário ou cole o link do perfil.</p></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 0.5rem; max-width: 24rem; } .ds-field label { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-cream, #f0dfbd); } .ds-field input { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); min-height: 3rem; border-radius: 2px; border: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 35%, transparent); background: transparent; padding: 0 0.75rem; font-size: 1rem; color: var(--color-cream, #f0dfbd); } .ds-field input::placeholder { color: color-mix(in oklab, var(--color-cream-dim, #b8a98b) 70%, transparent); } .ds-field input:focus-visible { outline: 2px solid var(--color-cream, #f0dfbd); outline-offset: 3px; border-color: var(--color-cream, #f0dfbd); } .ds-field input[aria-invalid=true] { border-color: var(--color-alert, #ff8f6b); } .ds-hint { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); margin: 0; font-size: 0.875rem; color: var(--color-cream-dim, #b8a98b); }"
+    },
+    {
+      "name": "Option Chips",
+      "kind": "chip",
+      "refersTo": "option-chip",
+      "description": "Conjunto de opções para tamanhos, cores e tipo sanguíneo. A selecionada fica em creme cheio.",
+      "html": "<div class=\"ds-chips\" role=\"group\" aria-label=\"Tamanhos\"><button class=\"ds-chip\">P</button><button class=\"ds-chip\" aria-pressed=\"true\">M</button><button class=\"ds-chip\">G</button><button class=\"ds-chip\">GG</button></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; } .ds-chip { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 3rem; min-width: 3.5rem; align-items: center; justify-content: center; padding: 0 1rem; border-radius: 2px; border: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 35%, transparent); background: transparent; color: var(--color-cream-dim, #b8a98b); cursor: pointer; transition: color 200ms, background-color 200ms, border-color 200ms; } .ds-chip:hover { color: var(--color-cream, #f0dfbd); border-color: var(--color-cream, #f0dfbd); } .ds-chip[aria-pressed=true] { background: var(--color-cream, #f0dfbd); border-color: var(--color-cream, #f0dfbd); color: var(--color-asphalt, #0c0b0a); } .ds-chip:focus-visible { outline: 2px solid var(--color-cream, #f0dfbd); outline-offset: 3px; }"
+    },
+    {
+      "name": "Quantity Stepper",
+      "kind": "custom",
+      "refersTo": "button-outline",
+      "description": "Linha de tamanho no montador de pedido: tamanho, selo Seu tamanho quando for o caso, menos, quantidade e mais.",
+      "html": "<div class=\"ds-step\"><span class=\"ds-step-size\">M <span class=\"ds-step-mine\">Seu tamanho</span></span><span class=\"ds-step-ctl\"><button aria-label=\"Tirar uma\">−</button><output>2</output><button aria-label=\"Somar uma\">+</button></span></div>",
+      "css": ".ds-step { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; border-top: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); max-width: 24rem; color: var(--color-cream, #f0dfbd); } .ds-step-size { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 0.75rem; } .ds-step-mine { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; display: inline-flex; align-items: center; border-radius: 2px; border: 1px solid; padding: 0.25rem 0.5rem; white-space: nowrap; border-color: color-mix(in oklab, var(--color-cream, #f0dfbd) 50%, transparent); } .ds-step-ctl { display: inline-flex; align-items: center; gap: 0.25rem; } .ds-step-ctl button { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; width: 3rem; height: 3rem; border-radius: 2px; border: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 70%, transparent); background: transparent; color: var(--color-cream, #f0dfbd); cursor: pointer; } .ds-step-ctl button:hover { border-color: var(--color-cream, #f0dfbd); background: color-mix(in oklab, var(--color-cream, #f0dfbd) 10%, transparent); } .ds-step-ctl output { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); width: 2.5rem; text-align: center; font-size: 1.125rem; font-weight: 600; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Campaign Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Cartão de vestuário no Início: nome, preço, números do grupo e, abaixo do fio, a situação da pessoa com a ação.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-body\"><h3>Camiseta Mirante</h3><p class=\"ds-card-price\"><strong>R$ 80,00</strong> por peça</p><p class=\"ds-card-meta\">2 pedidos · 5 peças no grupo</p></div><div class=\"ds-card-foot\"><p>Você ainda não pediu</p><button class=\"ds-card-cta\">Fazer pedido</button></div></article>",
+      "css": ".ds-card { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); background: var(--color-asphalt-raised, #171513); color: var(--color-cream, #f0dfbd); border-radius: 2px; max-width: 22rem; } .ds-card-body { padding: 1.25rem 1.25rem 0; } .ds-card h3 { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 62%; font-weight: 800; line-height: 0.96; letter-spacing: 0.005em; text-transform: uppercase; font-size: 1.5rem; margin: 0; } .ds-card-price { margin: 0.5rem 0 0; } .ds-card-price strong { font-size: 1.125rem; font-weight: 600; } .ds-card-meta { margin: 0.25rem 0 0; font-size: 0.875rem; color: var(--color-cream-dim, #b8a98b); } .ds-card-foot { margin-top: 1.25rem; padding: 1.25rem; border-top: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); display: flex; flex-direction: column; gap: 0.75rem; } .ds-card-foot p { margin: 0; font-weight: 600; } .ds-card-cta { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 3rem; cursor: pointer; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 2px; padding: 0 1.25rem; border: 1px solid transparent; transition: color 200ms, background-color 200ms, border-color 200ms; background: var(--color-ember, #d4551f); color: var(--color-asphalt, #0c0b0a); width: 100%; } .ds-card-cta:hover { background: var(--color-ember-hot, #ea6a2e); }"
+    },
+    {
+      "name": "Ride Answer",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Rodapé do cartão de passeio: sem resposta, respondido e trocando a resposta.",
+      "html": "<div class=\"ds-ride\"><p class=\"ds-ride-date\">dom 22 nov · saída 7h</p><div class=\"ds-ride-row\"><span class=\"ds-ride-badge\">Você vai</span><button class=\"ds-ride-swap\">Trocar</button></div></div>",
+      "css": ".ds-ride { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); background: var(--color-asphalt-raised, #171513); color: var(--color-cream, #f0dfbd); border-radius: 2px; padding: 1.25rem; max-width: 22rem; } .ds-ride-date { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; margin: 0 0 1rem; color: var(--color-ember-hot, #ea6a2e); } .ds-ride-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); padding-top: 1rem; } .ds-ride-badge { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; display: inline-flex; align-items: center; border-radius: 2px; border: 1px solid; padding: 0.25rem 0.5rem; white-space: nowrap; background: var(--color-cream, #f0dfbd); border-color: var(--color-cream, #f0dfbd); color: var(--color-asphalt, #0c0b0a); } .ds-ride-swap { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; background: transparent; border: 0; padding: 0; min-height: 2.75rem; cursor: pointer; color: var(--color-cream, #f0dfbd); text-decoration: underline; text-decoration-color: var(--color-ember, #d4551f); text-decoration-thickness: 2px; text-underline-offset: 6px; } .ds-ride-swap:hover { color: var(--color-ember-hot, #ea6a2e); }"
+    },
+    {
+      "name": "Value Boxes",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Valores da campanha no painel: pago, pendente e total, com filete no topo e sem arredondamento.",
+      "html": "<dl class=\"ds-values\"><div class=\"ds-value ds-value-paid\"><dt>Pago</dt><dd>R$ 240,00</dd></div><div class=\"ds-value ds-value-pending\"><dt>Pendente</dt><dd>R$ 160,00</dd></div><div class=\"ds-value\"><dt>Total da campanha</dt><dd>R$ 400,00</dd></div></dl>",
+      "css": ".ds-values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0; } .ds-value { background: var(--color-asphalt-raised, #171513); padding: 1rem; border-top: 2px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); } .ds-value-paid { border-top-color: var(--color-cream, #f0dfbd); } .ds-value-pending { border-top-color: var(--color-ember, #d4551f); } .ds-value dt { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-cream-dim, #b8a98b); } .ds-value dd { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); margin: 0.25rem 0 0; font-size: 1.5rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--color-cream, #f0dfbd); } .ds-value-pending dd { color: var(--color-ember-hot, #ea6a2e); }"
+    },
+    {
+      "name": "Status Notice",
+      "kind": "custom",
+      "refersTo": "notice-status",
+      "description": "Confirmação do que acabou de acontecer, e a variante de erro que diz que nada foi salvo.",
+      "html": "<div class=\"ds-notices\"><p class=\"ds-notice\" role=\"status\">Pedido salvo.</p><p class=\"ds-notice ds-notice-error\" role=\"alert\">O perfil não foi salvo. Corrija os campos marcados.</p></div>",
+      "css": ".ds-notices { display: grid; gap: 0.75rem; max-width: 28rem; } .ds-notice { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); margin: 0; border-radius: 2px; border: 1px solid var(--color-cream, #f0dfbd); background: var(--color-cream, #f0dfbd); color: var(--color-asphalt, #0c0b0a); padding: 0.75rem 1rem; font-weight: 500; } .ds-notice-error { background: transparent; border-color: var(--color-alert, #ff8f6b); color: var(--color-alert, #ff8f6b); font-weight: 400; }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Cabeçalho de uma linha: nome do grupo e itens em rótulo, com a contagem de pedidos pendentes no Painel.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Principal\"><a href=\"#\">Início</a><a href=\"#\">Riders</a><a href=\"#\">Perfil</a><a href=\"#\">Painel <span class=\"ds-nav-count\">2</span></a><a href=\"#\">Sair</a></nav>",
+      "css": ".ds-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1.25rem; border-bottom: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); padding: 0.75rem 0; } .ds-nav a { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.5rem; color: var(--color-cream-dim, #b8a98b); text-decoration: none; } .ds-nav a:hover { color: var(--color-cream, #f0dfbd); } .ds-nav-count { background: var(--color-ember, #d4551f); color: var(--color-asphalt, #0c0b0a); border-radius: 2px; padding: 0.125rem 0.375rem; }"
+    },
+    {
+      "name": "Panel Tabs",
+      "kind": "nav",
+      "refersTo": "panel-tab",
+      "description": "Segunda linha de navegação, só no painel. A aba atual tem um traço laranja.",
+      "html": "<nav class=\"ds-tabs\" aria-label=\"Painel de gerenciamento\"><a href=\"#\">Avaliações</a><a href=\"#\" aria-current=\"page\">Gestão de riders</a><a href=\"#\">Vestuário</a><a href=\"#\">Passeios</a></nav>",
+      "css": ".ds-tabs { display: flex; gap: 1.5rem; overflow-x: auto; border-bottom: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); } .ds-tabs a { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; flex-shrink: 0; min-height: 3rem; align-items: center; color: var(--color-cream-dim, #b8a98b); text-decoration: none; border-bottom: 2px solid transparent; } .ds-tabs a:hover { color: var(--color-cream, #f0dfbd); } .ds-tabs a[aria-current=page] { color: var(--color-cream, #f0dfbd); border-bottom-color: var(--color-ember, #d4551f); }"
+    },
+    {
+      "name": "Group List Row",
+      "kind": "custom",
+      "refersTo": "avatar-initials",
+      "description": "Linha da lista do grupo: a linha inteira é o link para o perfil.",
+      "html": "<a class=\"ds-member\" href=\"#\"><span class=\"ds-member-avatar\" aria-hidden=\"true\">AR</span><span class=\"ds-member-text\"><span class=\"ds-member-name\">Ana Reis <span class=\"ds-member-badge\">Administrador</span></span><span class=\"ds-member-bike\">Scrambler 900</span></span><span aria-hidden=\"true\">›</span></a>",
+      "css": ".ds-member { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); display: flex; align-items: center; gap: 1rem; min-height: 3.5rem; padding: 0.75rem 0; border-top: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); border-bottom: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 15%, transparent); color: var(--color-cream, #f0dfbd); text-decoration: none; max-width: 28rem; } .ds-member:hover .ds-member-name { color: var(--color-ember-hot, #ea6a2e); } .ds-member-avatar { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 62%; font-weight: 800; line-height: 0.96; letter-spacing: 0.005em; text-transform: uppercase; display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: 3.5rem; height: 3.5rem; border-radius: 9999px; background: var(--color-cream, #f0dfbd); color: var(--color-asphalt, #0c0b0a); font-size: 1.125rem; } .ds-member-text { flex: 1; min-width: 0; } .ds-member-name { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.75rem; font-weight: 600; } .ds-member-badge { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.75rem; display: inline-flex; align-items: center; border-radius: 2px; border: 1px solid; padding: 0.25rem 0.5rem; white-space: nowrap; border-color: color-mix(in oklab, var(--color-cream, #f0dfbd) 50%, transparent); font-weight: 600; } .ds-member-bike { display: block; margin-top: 0.125rem; font-size: 0.875rem; color: var(--color-cream-dim, #b8a98b); }"
+    },
+    {
+      "name": "Private Block",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Bloco de dados privados: o título diz quem vê antes de qualquer dado.",
+      "html": "<section class=\"ds-private\"><h2>Só você e os administradores veem</h2><dl><div><dt>WhatsApp</dt><dd>(21) 98888-7777</dd></div><div><dt>Tamanho de roupa</dt><dd>M</dd></div></dl></section>",
+      "css": ".ds-private { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); background: var(--color-asphalt-raised, #171513); color: var(--color-cream, #f0dfbd); border-radius: 2px; padding: 1.25rem; max-width: 28rem; } .ds-private h2 { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; margin: 0; } .ds-private dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin: 1rem 0 0; } .ds-private dt { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-cream-dim, #b8a98b); } .ds-private dd { margin: 0.25rem 0 0; font-size: 1.125rem; font-weight: 600; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Gate Screen",
+      "kind": "custom",
+      "refersTo": "button-default",
+      "description": "Quadro das telas antes da entrada: título em Display, frase de apoio e uma ação em largura total.",
+      "html": "<div class=\"ds-gate\"><h1>Área dos riders</h1><p>Entre com sua conta Google. Se você ainda não é do grupo, o próximo passo é pedir ingresso.</p><button>Entrar com Google</button></div>",
+      "css": ".ds-gate { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); max-width: 28rem; color: var(--color-cream, #f0dfbd); } .ds-gate h1 { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 62%; font-weight: 800; line-height: 0.96; letter-spacing: 0.005em; text-transform: uppercase; font-size: clamp(2rem, 8vw, 2.75rem); margin: 0; text-wrap: balance; } .ds-gate p { margin: 1rem 0 0; line-height: 1.625; color: var(--color-cream-dim, #b8a98b); } .ds-gate button { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 3rem; cursor: pointer; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 2px; padding: 0 1.25rem; border: 1px solid transparent; transition: color 200ms, background-color 200ms, border-color 200ms; margin-top: 2rem; width: 100%; background: var(--color-ember, #d4551f); color: var(--color-asphalt, #0c0b0a); } .ds-gate button:hover { background: var(--color-ember-hot, #ea6a2e); }"
+    },
+    {
+      "name": "Back Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Volta para o nível acima em páginas de detalhe e de formulário. Fica perto do cabeçalho e antes do título.",
+      "html": "<a class=\"ds-back\" href=\"#\"><span class=\"ds-back-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 256 256\" width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M228,128a12,12,0,0,1-12,12H69l51.52,51.51a12,12,0,0,1-17,17l-72-72a12,12,0,0,1,0-17l72-72a12,12,0,0,1,17,17L69,116H216A12,12,0,0,1,228,128Z\"/></svg></span>Campanhas ativas</a>",
+      "css": ".ds-back { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.75rem; color: var(--color-cream, #f0dfbd); text-decoration: none; transition: color 200ms; } .ds-back-icon { display: inline-flex; width: 2rem; height: 2rem; align-items: center; justify-content: center; border-radius: 2px; border: 1px solid color-mix(in oklab, var(--color-cream, #f0dfbd) 35%, transparent); transition: border-color 200ms, background-color 200ms, transform 200ms; } .ds-back:hover { color: var(--color-ember-hot, #ea6a2e); } .ds-back:hover .ds-back-icon { border-color: var(--color-ember, #d4551f); background: color-mix(in oklab, var(--color-ember, #d4551f) 15%, transparent); transform: translateX(-2px); } .ds-back:focus-visible { outline: 2px solid var(--color-cream, #f0dfbd); outline-offset: 3px; }"
+    },
+    {
+      "name": "Profile Facts",
+      "kind": "custom",
+      "refersTo": "profile-facts",
+      "description": "Bio e fatos que o grupo vê de uma pessoa: cada fato tem ícone em Laranja Aceso, rótulo e valor. Dado não informado não deixa rótulo.",
+      "html": "<div class=\"ds-facts\"><p class=\"ds-facts-bio\">Scrambler 900, serra aos sábados e café em Itaipava.</p><dl><div><svg viewBox=\"0 0 256 256\" width=\"20\" height=\"20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z\"/></svg><span><dt>Região</dt><dd>Zona Norte</dd></span></div><div><svg viewBox=\"0 0 256 256\" width=\"20\" height=\"20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z\"/></svg><span><dt>No grupo desde</dt><dd>novembro de 2026</dd></span></div></dl></div>",
+      "css": ".ds-facts { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); color: var(--color-cream, #f0dfbd); max-width: 32rem; } .ds-facts-bio { font-size: 1.125rem; line-height: 1.625; margin: 0 0 1.25rem; } .ds-facts dl { display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin: 0; } .ds-facts dl > div { display: flex; align-items: center; gap: 0.75rem; } .ds-facts svg { color: var(--color-ember-hot, #ea6a2e); flex-shrink: 0; } .ds-facts dt { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-cream-dim, #b8a98b); } .ds-facts dd { margin: 0; font-weight: 600; }"
+    },
+    {
+      "name": "Birthdays Block",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Aniversariantes do mês no topo da tela Riders: dia em laranja, avatar e nome, cada linha levando ao perfil.",
+      "html": "<section class=\"ds-bday\"><h2>Aniversariantes de novembro</h2><a href=\"#\"><span class=\"ds-bday-day\">21</span><span class=\"ds-bday-avatar\" aria-hidden=\"true\">RB</span><span>Rafa</span></a></section>",
+      "css": ".ds-bday { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); background: var(--color-asphalt-raised, #171513); color: var(--color-cream, #f0dfbd); border-radius: 2px; padding: 1.25rem; max-width: 28rem; } .ds-bday h2 { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; margin: 0 0 1rem; } .ds-bday a { display: flex; align-items: center; gap: 0.75rem; min-height: 3rem; color: inherit; text-decoration: none; font-weight: 600; } .ds-bday a:hover { color: var(--color-ember-hot, #ea6a2e); } .ds-bday-day { width: 2.25rem; font-size: 1.25rem; color: var(--color-ember-hot, #ea6a2e); font-variant-numeric: tabular-nums; } .ds-bday-avatar { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 9999px; background: var(--color-cream, #f0dfbd); color: var(--color-asphalt, #0c0b0a); }"
+    },
+    {
+      "name": "Bike Row",
+      "kind": "custom",
+      "refersTo": "bike-row",
+      "description": "Moto no perfil: foto em quadro 4:3 (com estado vazio), apelido em Label, modelo, resumo e modificações por categoria.",
+      "html": "<div class=\"ds-bike\"><div class=\"ds-bike-photo\" aria-hidden=\"true\"></div><div><p class=\"ds-bike-nick\">Tangerina</p><p class=\"ds-bike-model\">Scrambler 400 X</p><p class=\"ds-bike-facts\">400 cilindradas · 2024 · Amarela · 280 km de autonomia</p><dl><dt>Escape</dt><dd>Zard alto, ponteira dupla</dd><dt>Pneus</dt><dd>Pirelli Scorpion Rally STR</dd></dl></div></div>",
+      "css": ".ds-bike { font-family: var(--font-sans, Figtree, ui-sans-serif, system-ui, sans-serif); display: flex; align-items: flex-start; gap: 1rem; color: var(--color-cream, #f0dfbd); max-width: 32rem; } .ds-bike-photo { width: 6rem; aspect-ratio: 4 / 3; flex-shrink: 0; border-radius: 2px; background: var(--color-asphalt-raised, #171513); } .ds-bike p { margin: 0; } .ds-bike-nick { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-cream, #f0dfbd); } .ds-bike-model { font-weight: 600; } .ds-bike-facts { font-size: 0.875rem; color: var(--color-cream-dim, #b8a98b); margin-top: 0.125rem; } .ds-bike dl { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.5rem; margin: 0.75rem 0 0; font-size: 0.875rem; } .ds-bike dt { font-family: var(--font-display, Archivo, ui-sans-serif, system-ui, sans-serif); font-stretch: 75%; font-weight: 600; font-size: 0.875rem; line-height: 1.2; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-cream-dim, #b8a98b); } .ds-bike dd { margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "O Emblema no Asfalto",
+    "overview": "O logo abre a plataforma montando-se sozinho sobre o preto, e depois fica pequeno no topo de cada tela. O resto é texto sobre um chão preto quente: um título condensado em caixa alta, frases curtas em creme, uma ação laranja por contexto e selos que dizem a situação de cada coisa. Fotografia aparece só como conteúdo: a peça de uma campanha de vestuário, a foto de um passeio, o rosto de uma pessoa. Ela nunca é decoração.\n\nA densidade é baixa e o celular vem primeiro: quem chega de um link do WhatsApp resolve em poucos toques, numa coluna única. As telas de entrada são uma coluna estreita centrada na altura; a área dos riders é uma coluna mais larga com um cabeçalho de uma linha; o painel de gerenciamento acrescenta uma segunda linha de navegação. Não há sombra, gradiente, textura nem ornamento. A forma vem do contraste entre o título pesado e o texto corrido, de fios finos em creme translúcido e de um único tom de superfície elevada.\n\nEste documento registra o que está construído em 2026-11-17: a abertura do logo, as telas de entrada e de situação, o Início com passeios e vestuário, a página da campanha com o montador de pedido, a página do passeio com resposta de presença, os perfis (meu perfil, edição, motos, riders, perfil de outra pessoa e ficha para administradores) e o painel (avaliações, riders, campanhas de vestuário, templates, pedidos com produção, passeios). Não existe landing page. O grupo nunca é apresentado como motoclube, em texto, sigla, imagem ou elemento visual.",
+    "keyCharacteristics": [
+      "O logo original é a única imagem de identidade; ele se monta em camadas na abertura e depois aparece pequeno e parado.",
+      "Um chão preto quente, texto creme, laranja para a ação principal e para o fato que pede atenção, coral para problema.",
+      "Títulos em Archivo condensada, peso 800, caixa alta; rótulos em Archivo menos condensada, peso 600; todo texto corrido em Figtree.",
+      "Toda situação é dita por um selo com texto; a cor do selo reforça, nunca substitui.",
+      "Plano: sem sombras. A profundidade vem de um tom de superfície elevada e de fios em creme translúcido.",
+      "Cantos quase retos (2px) em controles e superfícies; o círculo é exclusivo do rosto e do emblema.",
+      "Um único movimento autoral, a abertura do logo, desligado com `prefers-reduced-motion`."
+    ],
+    "rules": [
+      {
+        "name": "The Laranja É Ação Rule",
+        "body": "O laranja cheio preenche uma única ação por contexto. Como texto, marca só o fato que pede atenção agora. Não colore títulos, fundos de seção nem ornamento. Ícones de fato e de seção são a única outra presença do laranja: marcam o tipo de informação, sempre ao lado da palavra.",
+        "section": "colors"
+      },
+      {
+        "name": "The Selo Diz a Situação Rule",
+        "body": "Toda situação aparece como selo com palavra: Aberto, Fechado, Cancelado, Pago, Pendente, Principal, Administrador, Bloqueado, Seu tamanho. A cor do selo segue o significado e nunca é o único sinal.",
+        "section": "colors"
+      },
+      {
+        "name": "The Um Tom Acima Rule",
+        "body": "Existe um chão e um único tom elevado. Não há segundo nível de elevação: dentro de um cartão, a separação é feita por fios.",
+        "section": "colors"
+      },
+      {
+        "name": "The Coral É Problema Rule",
+        "body": "O coral aparece onde algo deu errado, precisa ser corrigido ou não tem volta. Não serve de destaque neutro nem de decoração.",
+        "section": "colors"
+      },
+      {
+        "name": "The Duas Vozes Rule",
+        "body": "Archivo nomeia e rotula; Figtree explica. Archivo nunca é usada em texto corrido, e Figtree é a face aprovada para ele.",
+        "section": "typography"
+      },
+      {
+        "name": "The Um Título Rule",
+        "body": "Cada tela tem um único título em Display, e nada fica acima dele além do link de voltar e, quando a coisa não está em situação normal, do selo de situação. As seções são anunciadas por um rótulo em creme cheio.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sem Sombra Rule",
+        "body": "Nenhuma superfície projeta sombra, nem em repouso nem em hover. O que precisa de destaque muda de tom, inverte as cores ou ganha um selo.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do tratar o Scrambler RJ como grupo: \"grupo\", \"pessoal do Scrambler RJ\", \"riders\".",
+      "Do usar o logo original inteiro como única imagem de identidade: 104px nas telas de entrada, 36px no cabeçalho.",
+      "Do manter a ordem e os tempos da abertura, e exibi-la em toda visita de quem ainda não entrou.",
+      "Do usar Figtree em todo texto corrido e Archivo só em títulos e rótulos, em caixa alta.",
+      "Do dar a cada tela um único título em Display e uma única ação em laranja cheio por contexto.",
+      "Do dizer toda situação com um selo que tem palavra, na cor do seu significado.",
+      "Do dar às ações secundárias texto creme com sublinhado laranja; creme apagado é só para apoio e navegação.",
+      "Do usar o Laranja Aceso quando o laranja for texto.",
+      "Do confirmar ações sem volta no próprio lugar, com a pergunta e os dois botões.",
+      "Do dizer quem vê os dados antes de pedi-los ou mostrá-los, em qualquer bloco privado.",
+      "Do manter botões, campos e opções com 3rem de altura e qualquer alvo de toque com pelo menos 2.75rem.",
+      "Do separar com fios de creme a 15% e levantar com Asfalto Elevado; nada além disso.",
+      "Do empilhar ações em largura total abaixo de 640px, com a principal primeiro.",
+      "Do escrever estados vazios como uma frase que diz o que vai aparecer ali."
+    ],
+    "donts": [
+      "Don't apresentar o grupo como motoclube: nada de brasões, patentes, hierarquia, siglas ou as palavras \"clube\" e \"motoclube\".",
+      "Don't recriar uma landing page ou qualquer página de apresentação antes da entrada.",
+      "Don't apontar para a entrada dos administradores em nenhuma tela, menu ou texto visível ao rider.",
+      "Don't usar Archivo em texto corrido nem trocar a face do texto corrido.",
+      "Don't colocar um rótulo solto acima do título da página; acima dele só o link de voltar e o selo de situação.",
+      "Don't alterar a ordem ou os tempos da abertura, nem exibi-la a quem já entrou ou com `prefers-reduced-motion`.",
+      "Don't usar sombras nem um segundo tom de superfície elevada.",
+      "Don't usar o laranja cheio em mais de uma ação por contexto, nem o laranja em títulos, fundos de seção ou ornamento.",
+      "Don't usar o Laranja do Logo como texto pequeno sobre o Asfalto Elevado.",
+      "Don't usar o coral fora de erro, problema ou confirmação de ação sem volta.",
+      "Don't comunicar uma situação só pela cor.",
+      "Don't usar fotografia como decoração: foto é a peça, o passeio ou a pessoa.",
+      "Don't mostrar telefone, tamanho ou dado de emergência de uma pessoa a outro rider.",
+      "Don't arredondar uma superfície que tem filete de destaque no topo, nem usar faixa lateral colorida.",
+      "Don't redesenhar o logo nem gerar imagens que o substituam.",
+      "Don't usar o visual de fábrica de um componente do shadcn sem restilizar.",
+      "Don't reaproveitar estilos do protótipo antigo ou da área logada rejeitada.",
+      "Don't escrever um link de voltar à mão, com caractere de seta ou em creme apagado; use BackLink."
+    ]
+  }
+}

@@ -1,0 +1,456 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  PARTICIPANT
+  ADMIN
+}
+
+enum JoinRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  BLOCKED
+}
+
+enum AccessDecisionKind {
+  APPROVED
+  REJECTED
+  REVERTED
+  BLOCKED
+  UNBLOCKED
+  PROMOTED
+  DEMOTED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(PARTICIPANT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  joinRequest   JoinRequest?
+  decisions     AccessDecision[]
+  batches       Batch[]
+  orders        Order[]
+  paymentEvents PaymentEvent[]
+  rides         Ride[]
+  attendance    RideAttendance[] @relation("AttendanceOf")
+  attendanceSet RideAttendance[] @relation("AttendanceAuthor")
+  ridePhotos    RidePhoto[]
+  rideResponses RideResponse[]
+  recipes       Recipe[]
+  profile       Profile?
+  bikes         Bike[]
+  comebacks     BatchComeback[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model JoinRequest {
+  id         String            @id @default(cuid())
+  userId     String            @unique
+  fullName   String
+  whatsapp   String
+  bikeModel  String
+  engineSize Int
+  status     JoinRequestStatus @default(PENDING)
+  createdAt  DateTime          @default(now())
+  decidedAt  DateTime?
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  decisions AccessDecision[]
+
+  @@index([status, createdAt])
+}
+
+model AccessDecision {
+  id            String             @id @default(cuid())
+  joinRequestId String
+  authorId      String
+  kind          AccessDecisionKind
+  createdAt     DateTime           @default(now())
+
+  joinRequest JoinRequest @relation(fields: [joinRequestId], references: [id], onDelete: Cascade)
+  author      User        @relation(fields: [authorId], references: [id])
+
+  @@index([joinRequestId, createdAt])
+}
+
+enum BatchStatus {
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+model Batch {
+  id             String      @id @default(cuid())
+  model          String
+  unitPriceCents Int
+  sizes          String[]
+  status         BatchStatus @default(OPEN)
+  createdById    String
+  openedAt       DateTime    @default(now())
+
+  // The closed campaign this one brought back, when it was opened from a request to return.
+  revivedFromId  String?
+
+  createdBy   User            @relation(fields: [createdById], references: [id])
+  revivedFrom Batch?          @relation("Revival", fields: [revivedFromId], references: [id], onDelete: SetNull)
+  revivals    Batch[]         @relation("Revival")
+  colors      BatchColor[]
+  orders      Order[]
+  comebacks   BatchComeback[]
+
+  @@index([status, openedAt])
+}
+
+// A rider asking for a closed campaign's garment to come back. Erased when an administrator
+// opens the new campaign: the request was answered.
+model BatchComeback {
+  batchId   String
+  userId    String
+  createdAt DateTime @default(now())
+
+  batch Batch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([batchId, userId])
+}
+
+model BatchColor {
+  id       String @id @default(cuid())
+  batchId  String
+  name     String
+  photoKey String
+  position Int
+
+  batch Batch       @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  items OrderItem[]
+
+  @@unique([batchId, position])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  batchId       String
+  userId        String
+  paymentStatus PaymentStatus @default(PENDING)
+  cancelledAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  batch  Batch          @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  user   User           @relation(fields: [userId], references: [id])
+  items  OrderItem[]
+  events PaymentEvent[]
+
+  @@unique([batchId, userId])
+}
+
+model OrderItem {
+  id       String @id @default(cuid())
+  orderId  String
+  colorId  String
+  size     String
+  quantity Int
+
+  order Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  color BatchColor @relation(fields: [colorId], references: [id])
+
+  @@unique([orderId, colorId, size])
+}
+
+enum PaymentEventKind {
+  MARKED_PAID
+  UNDONE
+  RESET_BY_EDIT
+  CANCELLED
+}
+
+model PaymentEvent {
+  id        String           @id @default(cuid())
+  orderId   String
+  authorId  String
+  kind      PaymentEventKind
+  reason    String?
+  createdAt DateTime         @default(now())
+
+  order  Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  author User  @relation(fields: [authorId], references: [id])
+
+  @@index([orderId, createdAt])
+}
+
+enum RideStatus {
+  OPEN
+  CLOSED
+  CANCELLED
+}
+
+enum RideAnswer {
+  GOING
+  NOT_GOING
+}
+
+model Ride {
+  id           String     @id @default(cuid())
+  route        String
+  meetingPoint String
+  startsAt     DateTime
+  returnsAt    DateTime
+  meetsAt      DateTime?
+  description  String?
+  distanceKm   Int?
+  surface      String?
+  difficulty   String?
+  rideMinutes  Int?
+  tollCents    Int?
+  packingNote  String?
+  planB        String?
+  mapUrl       String?
+  photoKey     String?
+  // The road the group sent as a GPX file, as an encoded line. Their own data, so it may be
+  // kept; when present it is drawn instead of the route asked from the map provider.
+  track        String?
+  status       RideStatus @default(OPEN)
+  createdById  String
+  createdAt    DateTime   @default(now())
+
+  createdBy User           @relation(fields: [createdById], references: [id])
+  responses RideResponse[]
+  stops     RideStop[]
+  tips      RideTipChoice[]
+  attendance RideAttendance[]
+  photos    RidePhoto[]
+
+  @@index([status, startsAt])
+}
+
+model RideResponse {
+  rideId    String
+  userId    String
+  answer    RideAnswer
+  updatedAt DateTime   @updatedAt
+
+  ride Ride @relation(fields: [rideId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([rideId, userId])
+}
+
+model Recipe {
+  id             String   @id @default(cuid())
+  model          String
+  unitPriceCents Int
+  sizes          String[]
+  createdById    String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  createdBy User          @relation(fields: [createdById], references: [id])
+  colors    RecipeColor[]
+}
+
+model RecipeColor {
+  id       String @id @default(cuid())
+  recipeId String
+  name     String
+  photoKey String
+  position Int
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([recipeId, position])
+}
+
+// The living record a participant edits. The join request stays frozen as what was evaluated.
+model Profile {
+  userId              String    @id
+  fullName            String
+  nickname            String?
+  instagram           String?
+  whatsapp            String
+  photoKey            String?
+  shirtSize           String?
+  emergencyName       String?
+  emergencyPhone      String?
+  bloodType           String?
+  emergencyName2      String?
+  emergencyPhone2     String?
+  healthPlan          String?
+  healthPlanCard      String?
+  healthNotes         String?
+  region              String?
+  experience          String?
+  bio                 String?
+  birthDay            Int?
+  birthMonth          Int?
+  reminderDismissedAt DateTime?
+  mainBikeId          String    @unique
+  updatedAt           DateTime  @updatedAt
+
+  user     User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Required and restricted on delete: a participant always keeps one main bike.
+  mainBike Bike @relation("MainBike", fields: [mainBikeId], references: [id], onDelete: Restrict)
+}
+
+model Bike {
+  id         String   @id @default(cuid())
+  userId     String
+  model      String
+  engineSize Int
+  year       Int?
+  color      String?
+  nickname   String?
+  rangeKm    Int?
+  photoKey   String?
+  createdAt  DateTime @default(now())
+
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mainOf Profile? @relation("MainBike")
+  mods   BikeMod[]
+
+  @@index([userId, createdAt])
+}
+
+model BikeMod {
+  id          String   @id @default(cuid())
+  bikeId      String
+  category    String
+  description String
+  createdAt   DateTime @default(now())
+
+  bike Bike @relation(fields: [bikeId], references: [id], onDelete: Cascade)
+
+  @@index([bikeId, createdAt])
+}
+
+model RideStop {
+  id       String  @id @default(cuid())
+  rideId   String
+  position Int
+  kind     String
+  name     String
+  place    String?
+  time     String?
+  note     String?
+  // Where the administrator put the pin on the map. Their own choice, not a search result.
+  lat      Float?
+  lon      Float?
+
+  ride Ride @relation(fields: [rideId], references: [id], onDelete: Cascade)
+
+  @@unique([rideId, position])
+}
+
+// What riders are told to bring. Kept by administrators; never deleted, only deactivated, so
+// rides that already use one keep showing it.
+model RideTip {
+  id        String   @id @default(cuid())
+  text      String
+  icon      String
+  position  Int
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  rides RideTipChoice[]
+
+  @@index([active, position])
+}
+
+model RideTipChoice {
+  rideId String
+  tipId  String
+
+  ride Ride    @relation(fields: [rideId], references: [id], onDelete: Cascade)
+  tip  RideTip @relation(fields: [tipId], references: [id], onDelete: Restrict)
+
+  @@id([rideId, tipId])
+}
+
+// An administrator's word on whether someone was on a ride, overriding what the person had
+// answered. Absent for most people: their answer stands.
+model RideAttendance {
+  rideId    String
+  userId    String
+  counts    Boolean
+  authorId  String
+  createdAt DateTime @default(now())
+
+  ride   Ride @relation(fields: [rideId], references: [id], onDelete: Cascade)
+  user   User @relation("AttendanceOf", fields: [userId], references: [id], onDelete: Cascade)
+  author User @relation("AttendanceAuthor", fields: [authorId], references: [id])
+
+  @@id([rideId, userId])
+}
+
+// A photo someone who was on the ride sent to its gallery. It shows to the group only after
+// an administrator approves it; a refused one is deleted.
+model RidePhoto {
+  id         String    @id @default(cuid())
+  rideId     String
+  userId     String
+  photoKey   String    @unique
+  approved   Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  reviewedAt DateTime?
+
+  ride Ride @relation(fields: [rideId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([rideId, approved, createdAt])
+}
