@@ -1,12 +1,14 @@
 ---
 id: 11
 title: Rota como template
-status: pending
+status: cancelled
 blocked_by: [02, 03]
 source: docs/specs/passeios-roteiro-e-mapa.md — decisão "Rota como template"
 ---
 
 # 11 — Rota como template
+
+Cancelado em 2026-11-23, por decisão do usuário: o grupo não vai salvar a rota de um passeio para reutilizar. Nada foi construído.
 
 ## What To Build
 
