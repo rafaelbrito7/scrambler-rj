@@ -32,4 +32,4 @@ export const profiles = createProfileService(db, access, photos);
 
 export const gallery = createGalleryService(db, access, rides, photos, shrinkGalleryPhoto);
 
-export const weather = createWeatherService(access, rides, openMeteo);
+export const weather = createWeatherService(rides, openMeteo);

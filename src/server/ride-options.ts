@@ -111,6 +111,12 @@ export function rioDateInput(instant: Date) {
   return new Date(instant.getTime() - 3 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }
 
+// The instant of a day ("2026-12-12") and a time ("07:30") on Rio's clock, which has had no
+// daylight saving time since 2019.
+export function rioInstant(day: string, time: string) {
+  return new Date(`${day}T${time}:00-03:00`);
+}
+
 export function rioTimeInput(instant: Date) {
   return new Date(instant.getTime() - 3 * 60 * 60 * 1000).toISOString().slice(11, 16);
 }

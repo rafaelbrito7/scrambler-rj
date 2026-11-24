@@ -1,12 +1,10 @@
-import type { AccessService } from "@/server/access";
-import { rioDateInput, rioTimeInput } from "@/server/ride-options";
-import { RideError, type RideService } from "@/server/rides";
+import { rioDateInput, rioInstant, rioTimeInput } from "@/server/ride-options";
+import type { RideService } from "@/server/rides";
 
 export type WeatherPoint = { lat: number; lon: number; at: Date };
 
 export type WeatherReading = { temperatureC: number; rainChance: number; weatherCode: number };
 
-// Where forecasts come from. Injected, so the tests need no network and the provider can change.
 export type WeatherProvider = {
   forecast(point: WeatherPoint): Promise<WeatherReading | null>;
 };
@@ -14,7 +12,7 @@ export type WeatherProvider = {
 export type Sky = "clear" | "partly" | "cloudy" | "fog" | "rain" | "storm";
 
 export type RideForecastPoint = {
-  label: "Encontro" | "Destino";
+  kind: "meeting" | "destination";
   place: string;
   at: Date;
   temperatureC: number;
@@ -22,10 +20,11 @@ export type RideForecastPoint = {
   sky: Sky;
 };
 
-export const FORECAST_WINDOW_DAYS = 7;
-
-const DAY = 24 * 60 * 60 * 1000;
-const KEEP_FOR = 3 * 60 * 60 * 1000;
+const HOUR = 60 * 60 * 1000;
+const DAY = 24 * HOUR;
+const FORECAST_WINDOW_DAYS = 7;
+const KEEP_READING_FOR = 3 * HOUR;
+const KEEP_FAILURE_FOR = 10 * 60 * 1000;
 
 // The sky in one word, from the WMO weather code forecasts use.
 export function skyOf(weatherCode: number): Sky {
@@ -64,8 +63,8 @@ export const openMeteo: WeatherProvider = {
   async forecast(point) {
     const day = rioDateInput(point.at);
     const params = new URLSearchParams({
-      latitude: point.lat.toFixed(2),
-      longitude: point.lon.toFixed(2),
+      latitude: String(point.lat),
+      longitude: String(point.lon),
       hourly: "temperature_2m,precipitation_probability,weather_code",
       timezone: "America/Sao_Paulo",
       start_date: day,
@@ -78,30 +77,48 @@ export const openMeteo: WeatherProvider = {
 
     if (!response.ok) return null;
 
-    return readOpenMeteo((await response.json()) as OpenMeteoAnswer, `${day}T${rioTimeInput(point.at).slice(0, 2)}:00`);
+    return readOpenMeteo((await response.json()) as OpenMeteoAnswer, `${day}T${rioTimeInput(point.at)}`);
   },
 };
 
+// Forecasts come by the hour and for an area, not a spot: the hour nearest the time asked,
+// and a place rounded to about a kilometre. Both the query and the stored key use this.
+function forecastSlot(place: { lat: number; lon: number }, at: Date): WeatherPoint {
+  return {
+    lat: Number(place.lat.toFixed(2)),
+    lon: Number(place.lon.toFixed(2)),
+    at: new Date(Math.round(at.getTime() / HOUR) * HOUR),
+  };
+}
+
 export function createWeatherService(
-  access: Pick<AccessService, "getAccess">,
   rides: Pick<RideService, "getRide">,
   provider: WeatherProvider,
   now: () => Date = () => new Date(),
 ) {
-  // Kept in this process for three hours, so a page visit rarely means a call to the provider.
-  // A restart only empties it.
-  const kept = new Map<string, { reading: WeatherReading; at: number }>();
+  // Kept in this process, so a page visit rarely means a call to the provider: a reading for
+  // three hours, a failure for ten minutes, so a provider that is down does not slow every
+  // visit. A restart only empties it.
+  const kept = new Map<string, { reading: WeatherReading | null; until: number }>();
 
-  async function readingFor(point: WeatherPoint) {
-    const key = `${point.lat.toFixed(2)},${point.lon.toFixed(2)},${point.at.toISOString().slice(0, 13)}`;
+  function forget(moment: number) {
+    for (const [key, entry] of kept) {
+      if (entry.until <= moment) kept.delete(key);
+    }
+  }
+
+  async function readingFor(slot: WeatherPoint) {
+    const moment = now().getTime();
+    const key = `${slot.lat},${slot.lon},${slot.at.toISOString()}`;
     const saved = kept.get(key);
 
-    if (saved && now().getTime() - saved.at < KEEP_FOR) return saved.reading;
+    if (saved && saved.until > moment) return saved.reading;
 
     // The weather never breaks a page: a provider that fails just leaves the point out.
-    const reading = await provider.forecast(point).catch(() => null);
+    const reading = await provider.forecast(slot).catch(() => null);
 
-    if (reading) kept.set(key, { reading, at: now().getTime() });
+    forget(moment);
+    kept.set(key, { reading, until: moment + (reading ? KEEP_READING_FOR : KEEP_FAILURE_FOR) });
 
     return reading;
   }
@@ -110,44 +127,38 @@ export function createWeatherService(
   // at the time planned for it. Null when there is nothing to show: more than a week ahead,
   // once the ride has set off, on a cancelled ride, without pins or with the provider down.
   async function getRideForecast(viewerId: string, rideId: string): Promise<RideForecastPoint[] | null> {
-    const viewer = await access.getAccess(viewerId);
-
-    if (viewer.state !== "approved") throw new RideError("FORBIDDEN");
-
     const ride = await rides.getRide(viewerId, rideId);
     const isWithinWindow = ride.startsAt.getTime() - now().getTime() <= FORECAST_WINDOW_DAYS * DAY;
 
     if (ride.status === "CANCELLED" || ride.isOver || !isWithinWindow) return null;
 
-    const day = rioDateInput(ride.startsAt);
-    const meeting = ride.stops[0];
     const destination = ride.stops.find((stop) => stop.kind === "DESTINATION");
+    const arrival = destination?.time ? rioInstant(rioDateInput(ride.startsAt), destination.time) : null;
+    // A stop's time carries no date: one that is not after the departure cannot be placed.
+    const arrivesAfterLeaving = arrival !== null && arrival > ride.startsAt;
     const wanted = [
-      { label: "Encontro" as const, stop: meeting, at: ride.startsAt },
-      {
-        label: "Destino" as const,
-        stop: destination,
-        at: destination?.time ? new Date(`${day}T${destination.time}:00-03:00`) : null,
-      },
+      { kind: "meeting" as const, stop: ride.stops[0], at: ride.startsAt },
+      { kind: "destination" as const, stop: destination, at: arrivesAfterLeaving ? arrival : null },
     ];
-    const points: RideForecastPoint[] = [];
+    const found = await Promise.all(
+      wanted.map(async ({ kind, stop, at }): Promise<RideForecastPoint | null> => {
+        if (!stop || stop.lat === null || stop.lon === null || at === null) return null;
 
-    for (const { label, stop, at } of wanted) {
-      if (!stop || stop.lat === null || stop.lon === null || at === null) continue;
+        const reading = await readingFor(forecastSlot({ lat: stop.lat, lon: stop.lon }, at));
 
-      const reading = await readingFor({ lat: stop.lat, lon: stop.lon, at });
+        if (!reading) return null;
 
-      if (!reading) continue;
-
-      points.push({
-        label,
-        place: stop.name,
-        at,
-        temperatureC: Math.round(reading.temperatureC),
-        rainChance: Math.round(reading.rainChance),
-        sky: skyOf(reading.weatherCode),
-      });
-    }
+        return {
+          kind,
+          place: stop.name,
+          at,
+          temperatureC: Math.round(reading.temperatureC),
+          rainChance: Math.round(reading.rainChance),
+          sky: skyOf(reading.weatherCode),
+        };
+      }),
+    );
+    const points = found.filter((point) => point !== null);
 
     return points.length > 0 ? points : null;
   }

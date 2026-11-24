@@ -73,7 +73,7 @@ async function setup(input: RideInput = serra) {
 
   const { id } = await rides.publishRide(admin.id, input);
   const fake = fakeProvider();
-  const weather = createWeatherService(access, rides, fake.provider, () => clock);
+  const weather = createWeatherService(rides, fake.provider, () => clock);
 
   return { admin, id, weather, ...fake };
 }
@@ -92,11 +92,12 @@ describe("previsão do tempo do passeio", () => {
     const { admin, id, weather, asked } = await setup();
 
     expect(await weather.getRideForecast(admin.id, id)).toEqual([
-      { label: "Encontro", place: "Posto Shell", at: new Date("2026-12-12T10:30:00Z"), temperatureC: 24, rainChance: 20, sky: "partly" },
-      { label: "Destino", place: "Almoço em Itaipava", at: new Date("2026-12-12T15:00:00Z"), temperatureC: 19, rainChance: 70, sky: "rain" },
+      { kind: "meeting", place: "Posto Shell", at: new Date("2026-12-12T10:30:00Z"), temperatureC: 24, rainChance: 20, sky: "partly" },
+      { kind: "destination", place: "Almoço em Itaipava", at: new Date("2026-12-12T15:00:00Z"), temperatureC: 19, rainChance: 70, sky: "rain" },
     ]);
+    // Forecasts come by the hour: 7h30 asks for the nearest one, 8h.
     expect(asked.map((point) => point.at)).toEqual([
-      new Date("2026-12-12T10:30:00Z"),
+      new Date("2026-12-12T11:00:00Z"),
       new Date("2026-12-12T15:00:00Z"),
     ]);
   });
@@ -128,17 +129,23 @@ describe("quando a previsão aparece", () => {
   it("deixa de fora a parada sem ponto no mapa e o destino sem horário", async () => {
     const noPin = await setup({ ...serra, stops: [{ ...meeting, lat: "", lon: "" }, lunch] });
 
-    expect((await noPin.weather.getRideForecast(noPin.admin.id, noPin.id))?.map((point) => point.label)).toEqual([
-      "Destino",
+    expect((await noPin.weather.getRideForecast(noPin.admin.id, noPin.id))?.map((point) => point.kind)).toEqual([
+      "destination",
     ]);
 
     await resetDatabase(db);
 
     const noTime = await setup({ ...serra, stops: [meeting, { ...lunch, time: "" }] });
 
-    expect((await noTime.weather.getRideForecast(noTime.admin.id, noTime.id))?.map((point) => point.label)).toEqual([
-      "Encontro",
+    expect((await noTime.weather.getRideForecast(noTime.admin.id, noTime.id))?.map((point) => point.kind)).toEqual([
+      "meeting",
     ]);
+  });
+
+  it("deixa de fora o destino com horário que não vem depois da saída", async () => {
+    const { admin, id, weather } = await setup({ ...serra, stops: [meeting, { ...lunch, time: "00:30" }] });
+
+    expect((await weather.getRideForecast(admin.id, id))?.map((point) => point.kind)).toEqual(["meeting"]);
   });
 
   it("sem nenhuma parada com ponto no mapa não há previsão nem consulta", async () => {
@@ -183,12 +190,11 @@ describe("guardar a previsão", () => {
     expect(asked).toHaveLength(4);
   });
 
-  it("não guarda uma falha: tenta de novo na visita seguinte", async () => {
+  it("depois de uma falha espera dez minutos antes de consultar de novo", async () => {
     const asked: WeatherPoint[] = [];
     const { admin, id } = await setup();
     let isDown = true;
     const weather = createWeatherService(
-      access,
       rides,
       {
         async forecast(point) {
@@ -203,9 +209,39 @@ describe("guardar a previsão", () => {
     expect(await weather.getRideForecast(admin.id, id)).toBeNull();
 
     isDown = false;
+    clock = new Date(sevenDaysBefore.getTime() + 9 * 60 * 1000);
+
+    expect(await weather.getRideForecast(admin.id, id)).toBeNull();
+    expect(asked).toHaveLength(2);
+
+    clock = new Date(sevenDaysBefore.getTime() + 10 * 60 * 1000);
 
     expect(await weather.getRideForecast(admin.id, id)).toHaveLength(2);
     expect(asked).toHaveLength(4);
+  });
+
+  it("consulta os dois pontos ao mesmo tempo", async () => {
+    const { admin, id } = await setup();
+    let waiting = 0;
+    let mostAtOnce = 0;
+    const weather = createWeatherService(
+      rides,
+      {
+        async forecast() {
+          waiting += 1;
+          mostAtOnce = Math.max(mostAtOnce, waiting);
+          await new Promise((resolve) => setTimeout(resolve, 5));
+          waiting -= 1;
+
+          return { temperatureC: 20, rainChance: 0, weatherCode: 0 };
+        },
+      },
+      () => clock,
+    );
+
+    await weather.getRideForecast(admin.id, id);
+
+    expect(mostAtOnce).toBe(2);
   });
 });
 
