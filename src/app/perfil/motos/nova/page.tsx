@@ -3,14 +3,17 @@ import type { Metadata } from "next";
 import { BikeForm } from "@/app/perfil/motos/bike-form";
 import { AppShell } from "@/components/app/app-shell";
 import { BackLink } from "@/components/app/back-link";
-import { access } from "@/server/services";
+import { access, bikeModels } from "@/server/services";
 import { requireState } from "@/server/session";
 
 export const metadata: Metadata = { title: "Adicionar moto | Scrambler RJ" };
 
 export default async function NewBikePage() {
   const viewer = await requireState("approved");
-  const pendingCount = viewer.isAdmin ? await access.countPending(viewer.userId) : 0;
+  const [pendingCount, offeredModels] = await Promise.all([
+    viewer.isAdmin ? access.countPending(viewer.userId) : 0,
+    bikeModels.listOffered(),
+  ]);
 
   return (
     <AppShell viewer={viewer} pendingCount={pendingCount}>
@@ -19,6 +22,7 @@ export default async function NewBikePage() {
 
       <BikeForm
         initial={{ model: "", engineSize: "", year: "", color: "", nickname: "", rangeKm: "" }}
+        bikeModels={offeredModels}
         hasPhoto={false}
         submitLabel="Adicionar moto"
       />

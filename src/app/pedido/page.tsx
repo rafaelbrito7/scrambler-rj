@@ -4,12 +4,14 @@ import { signOutAction } from "@/app/actions";
 import { JoinRequestForm } from "@/app/pedido/join-request-form";
 import { GateScreen } from "@/components/app/gate-screen";
 import { Button } from "@/components/ui/button";
+import { bikeModels } from "@/server/services";
 import { requireState } from "@/server/session";
 
 export const metadata: Metadata = { title: "Pedir ingresso | Scrambler RJ" };
 
 export default async function JoinRequestPage() {
   const viewer = await requireState("none");
+  const offeredModels = await bikeModels.listOffered();
 
   return (
     <GateScreen title="Pedir ingresso no grupo">
@@ -18,7 +20,7 @@ export default async function JoinRequestPage() {
         enviar.
       </p>
 
-      <JoinRequestForm defaultName={viewer.name ?? ""} />
+      <JoinRequestForm defaultName={viewer.name ?? ""} bikeModels={offeredModels} />
 
       <form action={signOutAction} className="mt-4">
         <Button type="submit" variant="ghost" className="w-full">

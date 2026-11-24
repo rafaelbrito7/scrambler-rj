@@ -7,7 +7,7 @@ import { ConfirmAction } from "@/components/app/confirm-action";
 import { formatDateTime, formatWhatsapp, whatsappLink } from "@/components/app/format";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import type { JoinRequestSummary } from "@/server/access";
 import { access } from "@/server/services";
 import { requireAdmin } from "@/server/session";
@@ -52,10 +52,17 @@ export default async function ParticipantsPage({ searchParams }: PageProps) {
 
   return (
     <AppShell viewer={viewer} pendingCount={pendingCount} area="painel">
-      <h1 className="display text-[clamp(2rem,6vw,2.75rem)]">Gestão de riders</h1>
-      <p className="mt-3 text-cream-dim">
-        {activeCount} {activeCount === 1 ? "rider" : "riders"} · {blockedCount} {blockedCount === 1 ? "bloqueado" : "bloqueados"}
-      </p>
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="display text-[clamp(2rem,6vw,2.75rem)]">Gestão de riders</h1>
+          <p className="mt-3 text-cream-dim">
+            {activeCount} {activeCount === 1 ? "rider" : "riders"} · {blockedCount} {blockedCount === 1 ? "bloqueado" : "bloqueados"}
+          </p>
+        </div>
+        <Link href="/painel/riders/modelos" className={buttonVariants({ variant: "ghost" })}>
+          Modelos de moto
+        </Link>
+      </div>
 
       {hasNotice && (
         <Alert role="status" className="mt-5">

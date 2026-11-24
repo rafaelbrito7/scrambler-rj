@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import type { Prisma } from "@/generated/prisma/client";
+import { loadOfferedBikeModels } from "@/server/bike-model-list";
 import { resolveBike } from "@/server/bike-models";
 import type { Database } from "@/server/db";
 import { recordName } from "@/server/display-name";
@@ -139,7 +140,7 @@ export function createAccessService(db: Database, options: AccessOptions) {
   }
 
   async function submitJoinRequest(userId: string, input: JoinRequestInput) {
-    const bike = resolveBike(input.bikeModel, input.engineSize);
+    const bike = resolveBike(await loadOfferedBikeModels(db), input.bikeModel, input.engineSize);
     const parsed = joinRequestSchema.safeParse({
       ...input,
       bikeModel: bike.model,
@@ -184,8 +185,13 @@ export function createAccessService(db: Database, options: AccessOptions) {
         }
 
         // The request stays as what was evaluated; the profile is the copy the person edits.
-        const bike = await tx.bike.create({
-          data: { userId, model: parsed.data.bikeModel, engineSize: parsed.data.engineSize },
+        const firstBike = await tx.bike.create({
+          data: {
+            userId,
+            model: parsed.data.bikeModel,
+            engineSize: parsed.data.engineSize,
+            listedModelId: bike.listedModelId,
+          },
         });
 
         await tx.profile.create({
@@ -193,7 +199,7 @@ export function createAccessService(db: Database, options: AccessOptions) {
             userId,
             fullName: parsed.data.fullName,
             whatsapp: parsed.data.whatsapp,
-            mainBikeId: bike.id,
+            mainBikeId: firstBike.id,
           },
         });
 

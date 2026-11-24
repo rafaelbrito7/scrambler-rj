@@ -4,9 +4,11 @@ import {
   MAX_MODS_PER_BIKE,
   MOD_CATEGORIES,
   MOD_DESCRIPTION_MAX_LENGTH,
+  type ListedBikeModel,
   type ModItem,
   resolveBike,
 } from "@/server/bike-models";
+import { loadOfferedBikeModels } from "@/server/bike-model-list";
 import type { Database } from "@/server/db";
 import { groupName } from "@/server/display-name";
 import {
@@ -342,7 +344,7 @@ export type GroupMember = Pick<
   mainBike: { model: string; engineSize: number; photoKey: string | null };
 };
 
-function validateBike(input: BikeInput, photoChange: PhotoChange) {
+function validateBike(input: BikeInput, photoChange: PhotoChange, models: ListedBikeModel[]) {
   const fieldErrors: ProfileFieldErrors = {};
   const isRejectedPhoto =
     photoChange.kind === "replace" &&
@@ -363,7 +365,7 @@ function validateBike(input: BikeInput, photoChange: PhotoChange) {
     fieldErrors.rangeKm = "Informe os quilômetros com um tanque, entre 50 e 1000.";
   }
 
-  const { model, engineSize } = resolveBike(input.model, input.engineSize);
+  const { model, engineSize, listedModelId } = resolveBike(models, input.model, input.engineSize);
   const yearText = input.year.trim();
   const color = input.color.trim();
   const year = yearText ? Number(yearText) : null;
@@ -387,6 +389,7 @@ function validateBike(input: BikeInput, photoChange: PhotoChange) {
   return {
     model,
     engineSize: Number(engineSize),
+    listedModelId,
     year,
     color: color || null,
     nickname: nickname || null,
@@ -865,7 +868,7 @@ export function createProfileService(
     input: BikeInput,
     photoChange: PhotoChange = { kind: "keep" },
   ) {
-    const data = validateBike(input, photoChange);
+    const data = validateBike(input, photoChange, await loadOfferedBikeModels(db));
     const photoKey = photoChange.kind === "replace" ? await photos.save(photoChange.photo) : null;
 
     try {
@@ -889,7 +892,8 @@ export function createProfileService(
     input: BikeInput,
     photoChange: PhotoChange = { kind: "keep" },
   ) {
-    const data = validateBike(input, photoChange);
+    // A bike keeps the model it already has on offer, even one taken off the list since.
+    const data = validateBike(input, photoChange, await loadOfferedBikeModels(db, bikeId));
     const isChangingPhoto = photoChange.kind !== "keep";
     const newPhotoKey = photoChange.kind === "replace" ? await photos.save(photoChange.photo) : null;
     let oldPhotoKey: string | null = null;

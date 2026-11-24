@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { BIKE_MODELS, matchBikeModel, resolveBike } from "@/server/bike-models";
+import { INITIAL_BIKE_MODELS, matchBikeModel, resolveBike } from "@/server/bike-models";
+
+const models = INITIAL_BIKE_MODELS.map((model, index) => ({ ...model, id: `modelo-${index}` }));
 
 describe("modelo da moto por lista", () => {
   it.each([
@@ -16,7 +18,7 @@ describe("modelo da moto por lista", () => {
     ["Triumph Street Scrambler 900", "Street Scrambler"],
     ["Scrambler 865", "Scrambler 865"],
   ])("reconhece %s como %s", (text, name) => {
-    expect(matchBikeModel(text)?.name).toBe(name);
+    expect(matchBikeModel(models, text)?.name).toBe(name);
   });
 
   it.each([
@@ -28,24 +30,33 @@ describe("modelo da moto por lista", () => {
     "Bonneville T120",
     "",
   ])("deixa %s fora da lista, por ser ambíguo ou outro modelo", (text) => {
-    expect(matchBikeModel(text)).toBeNull();
+    expect(matchBikeModel(models, text)).toBeNull();
   });
 
   it("dá a cada modelo da lista a própria cilindrada, ignorando a digitada", () => {
-    for (const model of BIKE_MODELS) {
-      expect(resolveBike(model.name, "9999")).toEqual({
+    for (const model of models) {
+      expect(resolveBike(models, model.name, "9999")).toEqual({
         model: model.name,
         engineSize: String(model.engineSize),
-        isListed: true,
+        listedModelId: model.id,
       });
     }
   });
 
   it("mantém o que foi digitado quando o modelo não está na lista", () => {
-    expect(resolveBike(" Speed Twin 900 ", " 900 ")).toEqual({
+    expect(resolveBike(models, " Speed Twin 900 ", " 900 ")).toEqual({
       model: "Speed Twin 900",
       engineSize: "900",
-      isListed: false,
+      listedModelId: null,
     });
+  });
+
+  it("não escolhe quando dois modelos da lista respondem pela mesma grafia", () => {
+    const twins = [
+      { id: "a", name: "Scrambler 900", engineSize: 900 },
+      { id: "b", name: "Scrambler-900", engineSize: 900 },
+    ];
+
+    expect(matchBikeModel(twins, "scrambler 900")).toBeNull();
   });
 });

@@ -68,7 +68,7 @@ for (const p of people) {
   for (const [i, b] of p.bikes.entries()) {
     const bid = `mockbike${p.slug}${i}`;
     const key = b.photo === null ? null : await picture("bike", b.nick ?? b.model, b.photo);
-    await q(`insert into "Bike" (id, "userId", model, "engineSize", year, color, nickname, "rangeKm", "photoKey", "createdAt") values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`, [bid, uid, b.model, b.cc, b.year, b.color, b.nick, b.range, key, new Date(since.getTime() + i * 60000)]);
+    await q(`insert into "Bike" (id, "userId", model, "engineSize", year, color, nickname, "rangeKm", "photoKey", "createdAt", "listedModelId") values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,(select id from "BikeModel" where name = $3 and "engineSize" = $4))`, [bid, uid, b.model, b.cc, b.year, b.color, b.nick, b.range, key, new Date(since.getTime() + i * 60000)]);
     for (const [j, [cat, text]] of b.mods.entries()) await q(`insert into "BikeMod" (id, "bikeId", category, description, "createdAt") values ($1,$2,$3,$4,$5)`, [`${bid}m${j}`, bid, cat, text, new Date(since.getTime() + j * 1000)]);
     main ??= bid;
   }
